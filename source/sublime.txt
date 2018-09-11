@@ -1,0 +1,106 @@
+sublime下载介绍：https://blog.csdn.net/mazegong/article/details/78859502
+dos窗口：win+r
+环境变量：设置计算机的环境变量，在dos窗口中输入例如：qq就可执行qq.exe的可执行程序（exe可执行程序）
+	在dos窗口中输入可执行程序名，不仅会在当前目录下寻找，还会在环境变量中寻找
+	可执行的程序名是否可以更改？
+
+安装插件
+ctrl+shift+p  =>  选择install Package   =>  输入要安装的插件名
+可以直接下载安装包解压缩到Packages目录（菜单->preferences->　　Browse Packages）
+
+
+linux操作系统（512M）  和 window操作系统（至少一个G）
+所以选择linux操作系统作为网站服务器，价格便宜
+
+sublime快捷键（鼠标右键）---   以该程序打开 ----
+1.开始 - > 运行   ->regedit（打开系统注册表） -> ctrl+f搜索shell
+2.右键shell新建 项 （Sublime）
+3.在Sublime中建立command
+4.配置command的数值数据，（“该软件的exe路径”  -p --remote-tab-slient "%1"）
+即可使用右键将某文件以改程序打开
+
+
+常用插件
+　　1、ConvertToUTF8　　　　     支持多种编码，解决中文乱码问题。
+　　2、Bracket Highlighter　　      用于高亮匹配括号、引号、html标签。
+　　3、DocBlockr　　　　　　　    可以自动生成PHPDoc风格的注释。
+　　4、Emmet 　　　　　　　　 　 快速编写HTML，原 Zen Coding。
+　　5、SideBar Enhancements　　这个插件改进了侧边栏，增加了许多功能
+　　6、evernote　　　　　　　　　这个是 evernote 的插件，支持 markdown 语法
+　　7、markdown preview　　　　markdown 预览插件
+
+
+sublime开启VI功能
+安装vim后若无效，
+则在菜单栏中： Preferences -> Setting - User ，即可打开配置文件进行编辑，将 ignored_packages 项的[]里面内容清空
+
+vi编辑器的模式
+1.输入模式（输入）
+2.命令模式（操作快捷键）
+3.末行模式
+
+模式切换iosaIOSA都可以
+i:前面插入	
+o:下一行
+s:替换插入
+a:后面插入
+
+I:行首
+O:上一行
+S:删除整行
+A:行末
+
+输入模式->命令模式
+esc
+末行模式    ： 
+esc两次
+
+命令模式的命令（在命令模式下）
+h：左
+j：下
+k：上
+l：右
+dd：删除本行
+G：到最后一行（按5+G会跳到第五行，其他类似）
+yy：复制当前行   （3yy复制3行）
+p：粘贴到下一行   （3p粘贴多次）
+P：粘贴到上一行（大写P）
+u：撤销
+ctrl+y：恢复
+dG：从本行到最后一行都删除
+d1G：从本行到第一行的全部删除
+dw：删除一个单词
+d^：充当前字符删到这一行的行首（当行当前字符之前的都删除）------保留当前字符
+d$：当行当后字符之前的都删除				------不保留当前字符
+查找 /hello   按n键依次查看
+v：按v键再按上下键进行试图选中。进行快速缩进
+x：删除当前字符    （2x删除两个）
+
+末行模式指令
+w：保存不退出
+x：保存退出
+
+sublime的快捷键
+1.ctrl+shift+t  恢复已经关闭的文件
+2.ctrl+k+b  左侧边栏关闭与开启
+3.alt+shift+1  取消分屏
+4.多光标操作  ctrl+鼠标左键
+5.块移动  tab    shift+tab
+
+sublime设置
+line_numbers": false     sublime行号关闭
+"auto_match_enabled": true     sublime自动符号补全是否开启（符号补全）
+"auto_complete": true              sublime命令自动补全是否开启
+"highlight_line": true		sublime鼠标背景线高亮
+注释：ctrl+/	根据文件后缀不同，注释也不同
+
+emmet插件
+！+tab   快速构建html
+(div>div>h1{$$$}*3)*4	{$$$} 是输出内容的，$$$==001
++：表示同级
+>：子级
+{}：内容
+#：id
+ . ：class
+* ：乘号
+$ : 代表数字

@@ -1,0 +1,412 @@
+vue组件优势：可以进行协作开发，组件复用，不用管常用功能，专注于独特功能
+
+vue组件库：element.eleme.io
+
+vue 数据绑定   
+	优势：？
+
+
+Vue模板
+<div id="#app">
+	{{ a }}
+	<span v-bind:title="{{ a }}"></span>
+</div>
+
+<script>
+	new Vue({
+		el:'#app',
+		data:{
+			a:123		
+			b:[1,2]
+		}，		
+		
+		methods:{
+			asd:function(){
+				this.a
+			},
+			
+			showme:function(){           
+				
+		                }
+		}
+	})
+</script>
+
+可以通过 {{ }} 在 vue 模板中输出vue的data 值；                                 输入
+对属性采用 {{ }} 赋值方式，不会成功。解决法案---> vue 指令
+
+vue 指令（操作DOM）
+
+对元素的某个属性绑定值
+v-bind:src=""
+
+添加事件
+v-on:click="asd"
+
+	v-on:click="a"
+	如果想在 a 函数中传入实参
+	v-on:click="a($event)"          $event:代表当前鼠标对象
+
+事件修饰符
+v-on:click.stop="a"            阻止冒泡
+v-on:click.prevent="a"       阻止默认行为
+
+按键修饰符（不能单独存在，必须和事件一起使用）
+v-on:click.enter="a"        回车键触发   
+v-on:click.13="a"             数字也可代替
+v-on:click.13.enter           多个建也可以
+
+系统修饰符
+v-on:click.shift='a'          shift和点击必须同时按才会有效*****************
+v-on:click.meta='a'	      元键和点击必须同时按才会有效
+
+通过v-on绑定事件，触发并传入this，此时，this指向window，若在vue实例中使用this，此时，this指向vue，
+如何获取目标对象的value？ 触发对象时，会有事件对象event，
+事件对象event，event.target指向其对象元素
+
+
+
+-------------------------------------------------------------------------------------------------------
+
+
+vue双向数据绑定（js，dom）
+v-model='a'
+    
+事件修饰符
+	v-model.trim       去掉首尾空格
+	v-model.number  变为数字
+	v-model.lazy        输入框失去焦点时才改变数据
+
+
+v-html='a'        将a的值变为html
+v-once            放在标签上，此标签中的值只渲染一次
+
+v-if='a>10'      放在标签上，渲染时，为false时，不会渲染该元素（节点干掉）。而不是隐藏。
+v-show='true/false'       与v-if类似，但只是display：none
+	<template></template>     该标签不会被渲染
+v-cloak      放在标签上，vue模板渲染成功后消失
+
+
+
+
+
+v-for='item in a'           循环数组
+v-for='(item,i) in a' 
+
+<ul>
+	<li  v-for='(item,i) in a'> {{ item }}{{  i }}</li>
+</ul>
+
+v-for='item in a'     循环对象，与循环数组类似
+v-for='(item,val) in a'       但是，此时 item  为键  ,  val  为值
+
+
+			{
+				el:"#app",        el为键  , #app 为值
+				data:{
+					divs:[
+						'one',
+						'two'
+					]
+				}
+
+			}
+
+
+a可以为数字，对象，数组，字符串时
+
+js对数组的引用，数组的引用的值改变，但是数组的引用未改变。
+Vue.set(this.b[1],10)      将数组b的第二项值改变，并重新渲染dom（内存地址未改变，所以值不会改变。此方法是vue针对此，采取的解决方案）
+this.b[1]:目标对象
+10:改变值
+
+vue重写了push，具有监察者模式，数组的很多方法都重写了，使用这些方法改变值后，vue会自动监听，并改变值
+
+
+v-if  模板复用
+因为使用同一个模板，其中的input也是同一个模板
+解决：
+在模板上添加一个唯一的值     v-bind:key='...'
+
+					{
+						name:"javascript",sub:['vue',"react",'angula']
+					},
+					{
+						name:"database",sub:['mysql',"mongodb",'sqls']
+					},
+					{
+						name:"system",sub:['macos',"linux",'windows']
+					}
+
+存放在methods上的方法,在任意绑定事件触发后，都会过一遍methods中的方法，防止遗漏，（浪费性能）
+解决：
+构造函数对象----计算属性computed
+
+构造函数对象中的methods属性中，只要当data中的值一改变时，默认执行methods中的所有方法---------耗内存，不会分析methods中的代码。
+构造函数对象中的computed属性中，默认执行一次并形成缓存，再次执行该方法时，只要依赖不变，只调用缓存，只有当computed中的依赖改变时，才会重新触发执行，并形成新的缓存-------computed中的依赖改变时，才会再次执行，否则只用缓存
+
+computed复杂用法------------------------
+computed:{
+	fullName:{
+		get:function(){
+			return this.firstName+" "+this.lastName;
+		},
+		set:function(val){
+			var arr=val.split(" ");
+			this.firstName=arr[0];
+			this.lastName=arr[1]
+		}
+	}
+}
+在模板中调用 {{ as }}  不用加括号
+
+默认执行get方法，并赋值给fullName
+当主动设置fullName的值时，触发set方法，并将值传入set方法中，改变依赖值，会触发get方法
+
+
+
+watch 监听
+
+watch:{
+	fullName : function(val){
+		...
+	}
+}
+
+fullName值改变时，触发，并将改变的值传入(val）  fullName是data中的数据名称
+
+watch与compted差异
+watch：可异步，可以无返回值
+compted：只能同步，必须有一个return返回值
+都可以监听，随便用，适合哪个用哪个
+数组的map（）会将返回值变为一个新的数组--------------------------------------
+
+
+--筛选数据--
+可自定义筛选规则：
+<div id="app" >
+		<p v-bind:title="msg | qk">{{msg|qk}}</p>
+	</div>
+	
+	<script type="text/javascript" src="./vue.js"></script>
+	<script type="text/javascript">
+		new Vue({
+			el:'#app',
+			data:{
+				msg:'hello world!'
+			},
+			filters:{
+				fu:function(val){
+					return val.split(" ").map(function(item){
+						return item.charAt(0).toUpperCase()+item.slice(1)+" ";
+					}).join(" ")
+					
+				},
+				qk:function(val){
+					return val.toString().replace(/ /g,"")
+				}
+			}
+		})
+	</script>
+改变样式
+改变内联样式，改变样式
+在data中，this无效，因为还未构建完成
+
+改变class，改变样式
+1.<div class="asd" v-bind:class="{colorr:iss,blue:ist}"></div>
+必须以json格式书写（判断true/false，判断样式是否显示）
+2.直接绑定class名
+<div class="asd" v-for="a in cls"  v-bind:class="a"></div>
+a代表类的名称，若很多  v-bind:class="[a,b,x]"  以数组方式引用，
+3.两种方法可以相互交叉
+<div class="asd" v-for="a in cls"  v-bind:class="[a,{b:ist}]"></div>
+a,b均为类名 ，ist为true
+
+组件化
+产生原因：在一个页面想用多次该组件
+
+全局创建vue组件
+Vue.component('asd',{
+				template:'<h1>sds{{msg}}</h1>',              注意：根节点只能为一个
+				data:function(){                              ---为每个组件返回各自的依赖，不共用---
+					return {
+						msg:'hahahah'
+					}
+				}
+			})
+
+new Vue({
+	el:'...'
+})   创建vue模板
+
+注意：
+1.组件的data数据要以函数的方式书写（预防多个组件共用一个数据，每创建一个模板，返回一个唯一值）
+	在一个页面想用多次该组件，必然要返回多个不同依赖
+2.创建的组件，必须在vue模板中使用才能生效
+
+局部组件创建
+var component={
+		template:'<h1>sds{{msg}}</h1>',
+		data:function(){                              为每个组件返回各自的依赖，不共用
+			return {
+				msg:'hahahah'
+			}
+		}
+	}
+new Vue({
+	el:'#app',
+	components:{
+		"asd":component;
+	}
+
+}）
+
+asd是组件名，在vue模板中使用<asd></asd>
+
+
+
+组件传值
+
+父传子
+在父组件中，在引用的子组件的标签名上绑定自定义的属性名，其值为要传输的值，
+	若属性名为name-asd，则在接收时，以nameAsd接受
+在子组件中   返回对象的属性名为 props：['自定义的属性名']                     规定接收哪些属性名的值
+		也可为对象 props：{
+			“自定义的属性名”：{
+					type：String,       规定该值的预期类型，如不是，则报错，也可为数组，[Number,String,....]
+					default:'gdl'         默认值
+				}
+			}
+
+子传父
+在子组件中点击触发函数，执行 this.$emit('父组件中的事件名，例：as '，{传入父组件的$eventd的值，可省略})
+在父组件中，对引用子组件的标签名上 添加点击事件 as=‘许执行的函数名（$event）’  $event接收子组件传来的值（obj）
+----------------------btn.vue---------------------------------------------------
+<template>
+ <div>
+   <button @click='shar($event)'>add</button>                   触发事件，并将事件源对象传入
+ </div>
+</template>
+
+<script>
+export default {
+  data(){
+  	return {
+  		
+  	}
+  },
+  props:{
+  	"author":{
+	  	type:String
+	  }
+	},
+  methods:{
+    shar:function(event){
+      this.$emit('bt',{ev:event})                    将事件源对象跨组件传输
+    }
+  }
+}
+</script>
+
+<style scoped>
+*{
+  color:red;
+}
+</style>
+----------------------btn.vue---------------------------------------------------
+
+--------------------------------atrticle.vue------------------------------------(父组件)-------------
+<template>
+ <div>
+ 	<h1>{{title}}{{mount}}</h1>
+ 	<p>{{time}}</p>
+ 	<p>{{arti}}</p>
+ 	<my-author :author="name"></my-author>               
+  <btn @bt="shared"></btn>                               绑定自定义事件
+ </div>
+</template>
+
+<script>
+import au from './author.vue' 
+import btna from './btn.vue'
+
+export default {
+	  data(){
+	  	return {
+	  		title:'王珞丹走红毯被影迷翻围栏求婚，吓得花容失色，网友：尴尬了',	  		
+	  		arti:'王珞丹中国好艺人，从出道以来并没有任何的绯闻，一直专心演戏，总是不断的挑战自己，也是不同的角色给大家，带来不一样的王珞丹，容颜五官精致，温柔大方，卸妆和化妆都一样，有着"素颜女王"的称号，一直以来深受粉丝们的喜爱',
+        name:"guodonglaing",
+        mount:0
+	  	}
+	  },
+  	  computed:{
+  		  time:function(){
+  			return new Date().toISOString()
+  		  }
+  	  },
+  	  components:{
+  	  	'my-author':au,
+        'btn':btna
+  	  },
+      methods:{
+        shared:function(e){
+          console.log(e)		获得触发自定义事件的传入值      {ev:event}
+            this.mount++
+        }
+      }
+  
+}
+</script>
+
+<style>
+
+</style>
+--------------------------------atrticle.vue------------------------------------(父组件)-------------
+
+父传子（html传值）
+
+父组件中：对引用子组件的标签名中 添加 <p slot='one'>......</p>       覆盖子组件中的<slot name='one'>{{asd}}</slot>    name='one'的slot  ，可对应多个
+
+父组件中=============================
+<template>
+ <div>
+ 	<h1>{{title}}{{mount}}</h1>
+ 	<p>{{time}}</p>
+ 	<p>{{arti}}</p>
+ 	<my-author :author="name"></my-author>
+  <btn @bt="shared">
+    <p slot='as'>123</p>		html元素，slot='as'是插槽的名称
+    <p slot='df'>gkdgjdlf</p>		html元素
+  </btn>
+ </div>
+</template>
+子组件================================
+<template>
+ <div>
+   <button @click='shar($event)'>add</button>
+   <slot name='as'></slot>		插槽，并附上名称
+   <slot name="df"></slot>
+
+ </div>
+</template>
+------------------------------父级的html元素就能传给子组件的插槽-------------------------------
+
+
+vue-cli
+安装vue-cli，通过vue init webpack-simple my-project 生成以wepack-simple为模板的项目
+配置时的选项
+License（证书）：一般用MIT
+
+安装完成后，安装必须包，并显示
+
+package-lock.json  是npm5.0的文件。能更快地访问文件地址（直接读取下载地址，下载更快
+
+resolve: {
+    alias: {
+      'vue$': 'vue/dist/vue.esm.js'
+    },
+    extensions: ['*', '.js', '.vue', '.json']	可以省略引用以此结尾的文件的后缀
+  },）
+
+遇见一个坑：将文件换了位置，但sublime编辑器中的以前的文件还是打开的，保存后存放的位置也是原来的位置
+	没有改到根本的文件，所以文件一直没效果。。。

@@ -1,0 +1,30 @@
+前端价值
+搭建前端工程：需要使用各个ES6,LESS..必须构建一个工程，不再是所见即所得了
+网络优化：http的理解，加快请求速度，缓存，如何做到
+API定制：与后台的json数据
+nodejs层：webpack等在nodejs层运行
+
+1.vue文件（template+script+style）
+2.js文件（其中引vue文件，引入vue，进行new vue（{}）配置）
+import Vue from "vue"
+import APP from './assets/index.vue'
+
+import "./assets/img/a.jpg"
+import "./assets/css/index.css"
+
+const a=document.createElement('div');
+document.body.appendChild(a)
+console.log(APP)
+new Vue({
+	render:(h)=>h(APP)			渲染引入的模板
+}).$mount(a)				绑定渲染节点a
+
+
+webpack.config.js中要配置vue-loader，能识别vue文件
+
+下载 
+autoprefixer	css加前缀
+postcss-loader	编译完成后优化css代码
+babel-loader
+babel-core
+

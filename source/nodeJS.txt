@@ -1,0 +1,18 @@
+安装cnpm
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+
+npm install安装某个指定的版本的方法
+在npm中安装固定的版本号package，只需要在其后加 ‘@版本号’
+npm install  --save  esri-loader@1.0.0
+
+nodejs是所有前端自动化的基础
+nodeJS：操作计算机的文件，网络，系统等的语言
+安装node解析器
+
+node.js文件执行  	node+文件绝对路径
+		cd至文件位置 -> node  文件名
+
+在文件的shell中 输入 npm init	初始npm包管理文件
+npm init -y   所有的都是yes，直接生成，不用选择
+利用nodejs实现本地 html 预览（服务器观看）  
+	

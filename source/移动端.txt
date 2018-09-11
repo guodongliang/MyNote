@@ -1,0 +1,55 @@
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+
+手机端事件:
+	触摸事件
+	手势事件
+	手机方向
+	重力感应
+
+触摸事件：（单指）
+	事件名：
+		touchstart
+		touchmove		按下并移动，才会触发
+		touchend
+
+	事件属性
+		touches			当前触摸对象
+		targetTouches		当前触摸对象
+		changedTouches		保存上一次触摸的对象，适用于手指松开后（touchmove）
+
+	Touch对象包含属性
+		event.touches[0].clientX
+		clientX		触摸时在视口的X坐标
+		clientY		触摸时在视口的Y坐标
+		identifier
+		screenX
+		screenY		
+		target		触摸的DOM节点
+
+
+手势事件（多指）
+	gesturestart		一个手指已经按着，另一个手指按下时触发
+	gesturechange		任何一个手指改变时触发
+	gestureend		任何一个手指移开时触发
+设备事件
+	旋转事件：
+		window.addEventListener('orientationchange',js,false);
+			function js(event){
+				event.preventDefault();
+				switch(window.orientation){
+					case 0:
+						alert('肖像模式');
+						break;
+					case -90:
+						alert('右');
+						break;
+					case 90:
+						alert('左');
+						break;
+				}
+				
+			}
+
+
+
+

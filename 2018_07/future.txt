@@ -1,0 +1,13 @@
+ES6
+jquery 源码   html表单元素及js怎样操作或jquery怎样操作
+封装ajax兼容性写法
+html5 css3 深入
+webpack
+git
+js设计模式
+vue 之vuex（父子组件层级过多，如何传值）
+vue 之vue-router（spa单页面）
+vue 之ssr（服务器渲染）
+查重，冒泡，选择
+微信小程序
+各种效果实现（拖拽。。）

@@ -1,0 +1,122 @@
+css属性选择器
+子选择器： div>p
+相邻兄弟选择器： span+p
+同级元素通用选择器：p~span  	只匹配同级元素，p元素之后的span，之前的不算
+属性选择器：a[href]		a的herf属性
+	   a[href='asd']	a的属性为asd，才会被选中
+
+字体图片（特殊字体相当于一个图片，但不是图片）
+@font-face{
+	font-family:'自定义的字体名字'，
+	src：url（‘字体图片的路径’），
+	        url（‘字体图片的路径’），
+		url（‘字体图片的路径’），
+		url（‘字体图片的路径’），   有多种格式
+	font-weight:,
+	font-style:,
+}
+字体格式
+.ttf
+.otf
+.woff
+.eot		给IE支持
+
+		@font-face {
+			  font-family: 'iconfont';
+			  src: url('iconfont.eot');
+			  src: url('iconfont.eot?#iefix') format('embedded-opentype'),
+			  url('iconfont.woff') format('woff'),
+			  url('iconfont.ttf') format('truetype'),
+			  url('iconfont.svg#iconfont') format('svg');
+			}
+		注意格式引用路径
+.svg
+
+标准盒模型（box-sizing:content-box）	
+	盒子的宽：boder+padding+width
+	盒子的高：boder+padding+height
+怪异盒模型（box-sizing:border-box）ie678不支持
+	盒子的宽：就是这设置的width		会包含border+padding
+	盒子的高：。。。height
+弹性盒模型
+
+
+
+
+过渡（从一个值到另一个值）ie9+
+transition:1s 1s all ease;
+	第一个值：过渡总时间
+	第二个值：延迟执行
+	第三个值：需要过渡的样式
+	第四个值：过渡的方式
+		linear：匀速
+		ease:慢速开始然后慢慢变快
+		ease-in：慢速开始
+		ease-out：慢速结束
+		ease-in-out：开始结束时慢，中间快
+		cubic-bezier(1,0,1,0)	贝塞尔曲线
+
+2D变换transform
+位移：translate
+旋转：rotate
+缩放：scale
+变形/斜切：skew
+
+translateX()
+translateY()
+translate(x轴偏移量，y轴偏移量)
+
+rotate（45deg）
+	正值顺时针
+	负值逆时针
+
+scale（number）
+
+skew	接收一个旋转角度：45deg
+skewX（40deg）
+skew（x轴的斜切角度，y轴的角度）
+
+transform:scale() translate()...; 可写多个
+变换解析顺序：从左至右依次解析
+
+变换原点：transform-origin：left top；  	设置变换原点，左上
+
+
+3D变换
+	首先要给要进行3D变换元素的父级添加  3D环境   和   景深
+
+	比2D多了 translateZ() 和 rotateZ（）
+
+	添加3D环境 
+	transform-style:preserve-3d;
+	景深: perspective:数值
+
+兼容IE9以下不支持
+
+
+动画/关键帧 animation
+
+first：定义关键帧
+	@keyframes 动画名称{
+		0%{。。。}
+		~
+		100%{。。。}
+	}
+
+	然后调用 动画名称（需要哪个元素使用，使用animation调用即可）
+	animation:1s 2s 动画名称 运动方式 动画执行次数
+		第一个值：运动总时间
+		第二个值：延迟运动时间
+		第三个值：动画名称
+		第四个值：运动方式
+			linear：匀速
+			ease:慢速开始然后慢慢变快
+			ease-in：慢速开始
+			ease-out：慢速结束
+			ease-in-out：开始结束时慢，中间快
+			cubic-bezier(1,0,1,0)	贝塞尔曲线
+		第五个值：执行次数
+
+动画样式初始值问题
+	动画结束后会回到初始的地方
+	解决：直接设置最终结果值

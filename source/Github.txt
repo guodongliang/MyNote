@@ -1,0 +1,84 @@
+git：分布式管理系统
+	将仓库存放到每个用户计算机之上，需要使用则下载其他用户的仓库
+
+项目提交流程
+	项目 ——> 缓存区   	add
+	缓存区——>本地仓库  commit
+	本地仓库——>其他仓库	push
+	其他仓库——>本地仓库	pull
+
+git下载
+安装时，选择Use Git from Git Base only,其他默认
+
+
+配置path
+配置环境变量
+
+配置git
+1.右键-gitbash	
+2.配置本机标识码（用户邮箱）(本机和其他用户交互，设置本机的唯一标识符)
+	git config --global user.name "gdl"
+	gir config --global user.email "1113521329@qq.com"
+	
+	查看地址	C:\Users\gdl    .gitconfig文件	
+
+3.访问github，每次都需要密码
+4.免密钥登录，可以配置ssh
+	先本地配置	ssh-keygen -t rsa -C 1113521329@qq.com
+	生成了本地ssh文件，查看地址C:\Users\gdl    .shh文件夹
+		id_rsa
+		id_rsa.pub	
+5.github设置ssh
+	setting中进行配置
+		title任意
+		将id_rsa.pub的内容复制到这里，进行生	
+	测试连通性
+	ssh -T git@github.com
+	若在.ssh文件中有known_hosts文件，则成功
+
+---ssh是客户端和远程的关联
+项目之间需要关联
+
+
+本地项目，构建git项目
+1.在项目文件夹中打开git_bash
+2.输入git init 初始化git配置
+
+远程项目，构建git项目
+1.在远程新建一个项目
+2.会生成一个唯一标识
+
+本地项目和远程项目关联
+git remote add origin 远程路径
+
+第一次发布项目
+1.git add .		.是当前目录的所有文件
+2.git commit -m "注释"	
+3.git push -u origin master
+	注意问题：1.git pull --rebase origin master，可以先使用此指令
+		  执行上面代码后可以看到本地代码库中多了README.md文件
+		2.连接错误
+		   查看ssh是否连接，检查项目之间是否连接
+		   必要时git remote rm origin  清除原有的git项目链接
+
+第一次下载项目
+git clone 项目标识符
+
+更新
+git pull
+
+提交
+1.git add .
+2.git commit -m 
+3.git push origin master
+
+
+
+
+git多人协作开发
+增加合作者：Collaborators +全名和邮箱
+并发送邀请链接
+
+合作伙伴：打开邀请连接并接受，下载项目，然后进行团队协作
+
+ssh-key和团队合作无关

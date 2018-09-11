@@ -1,0 +1,32 @@
+系统优化
+
+设置电脑为最优性能
+任务栏锁定，使用小图标（使用小任务栏按钮）
+文件夹设置（隐藏的文件显示，文件后缀显示）
+
+
+操作系统快捷键
+win+D	快速显示桌面
+win+R	打开运行窗口
+win+E	快速打开资源管理器
+win+L	快速锁定计算机
+win+数字键 	打开/显示任务栏的第n个图标
+
+html5语义化：使文档结构具有意义，不在只是个容器
+
+<header></header>	文档的头部或页面的头部
+<nav></nav>		定义导航
+<footer></footer>		文档的尾部或页面的尾部
+<aside></aside>		侧边栏或者附属信息
+<hgroup></hgroup>	标题的集合，h1~h6
+<figure></figure>		图片区域，可以包含多个图片或者一个figcaption（表示图片标题）
+<figcaption></figcaption>	图片区域标题，一般写在figure
+<section></section>	分区，页面或文档的独立功能的区域
+<article></article>		独立的文章，可以是文章，blog，短文，回复，评论
+
+新增api
+	querySelector('div#as')
+	querySelector('div.foo') 	返回集合
+
+
+

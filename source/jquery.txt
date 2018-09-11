@@ -1,0 +1,239 @@
+jQuery占据了两个全局变量：jQuery  ，$
+解析完成后立即执行
+	$(function(){...})
+	$(document).ready(function(){...})
+
+选择器
+id选择器   $("#id")             所有的选择器都返回一个jQuery包装对象，是一个伪数组	
+
+	jQuery包装对象转为dom对象
+	$("#id")[0]            jQuery -> dom
+	若选择多个对象，则依次排列
+
+	dom对象转为jQuery包装对象
+	$($("#id")[0] )          dom -> jQuery 
+	
+	转为了jQuery 包装对象，拥有了jQuery 原型的api（方法）
+。。。
+
+过滤选择器
+$(".class:first")                第一个元素
+：odd        奇数
+：even     	 偶数
+
+$("p[attr]")
+
+
+原生js事件绑定
+dom0
+	obj.onclick
+	事件处理程序只能绑定一个 ，绑定多个，后面会覆盖前面的。
+	
+dom2
+	obj.addEventListener('click',fn,false)
+	可以绑定多个事件处理程序，但执行顺序不能确定    
+jquery简单事件绑定
+$("#id").click(function(){......}) 
+高级绑定事件方式（同一个方法可绑定多个事件，也可同时绑定多个事件，也可绑定多个事件处理程序）
+$("#id").bind('submit',[data],fn)       data可省略
+$("#id").bind('submit click',[data],fn)   	同时绑定多个事件
+$("#id").bind({ click : function(){} },{...},{...})		绑定多个事件处理程序
+
+绑定事件只执行一次
+$("#id").one('submit',[data],fn)		与bind类似
+
+事件委托绑定
+父元素.on([type]，'子元素',[data],fn)         1.7版本以后使用on
+
+$('#id').click()                               直接触发目标事件
+trigger触发事件处理函数
+包装对象.trigger("click",[给触发事件传的参数，可多个])                     触发click事件，并传入参数，自定义事件也可触发
+包装对象.triggerHandler("click",[给触发事件传的参数，可多个])   	     只触发处理函数，不触发元素默认事件，不返回包装对象
+
+
+解绑事件
+解绑bind事件
+$dom.unbind()         解绑$dom的所有bind事件
+$dom.unbind('clikc',fn)       解绑click下的fn事件   ，可以多个click，解绑click的具体的函数  ，指定解绑
+
+解绑on事件
+$dom.off() 	与unbind类似
+$dom.off(‘type’,"[data]",fn)
+
+
+
+JQuery事件对象
+JQuery中的事件对象已经优化
+event.which   值为unicode码   	event.which  将event.keyCode和event.charCode 标准化了，推荐使用event.which  
+
+event.preventDeFault()	阻止事件默认行为
+event.stopPropagation()	阻止冒泡
+
+绑定自定义事件
+$dom.on('自定义事件名'，fn) 	使用on绑定自定义事件
+$dom.trigger('自定义事件名') 	触发自定义事件
+
+合成鼠标事件
+$dom.hover(fn1,fn2)   fn1移入触发	fn2移除触发
+
+jQuery的dom操作
+读写属性  $dom.attr(attrName,val)        若有val值则设置，反之则获取
+设置多个  $dom.attr(obj)		以对象的方式传入
+回调函数 	$dom.attr( attrNmae,fn(index,val){...} )         index  序列号    val  属性值
+
+prop与attr类似
+区别：	attr可用于任何属性的读写，包括自定义属性
+	prop用于对象固有的属性
+	prop返回值为boolean类型
+	attr返回string类型
+prop用于单选复选等操作
+
+移除属性：removerattr（‘sttrName’）
+
+
+内容操作 html()   和 text()
+$dom.html()   读取			获取html
+$dom.html("...")   设置
+$dom.html(function(index,val){...})       取得目标索引和值，内部有隐式循环
+
+text与html操作类似            获取值
+val（）      设置获取表单元素的value
+
+添加样式类的方法 addClass（）  removeClass（） 	toggleClass（）
+
+设置css的样式
+$dom.css()
+
+jQuery的DOM操作
+$("<h1></h1>").appendTo("body")		将元素添加至body
+
+jQuery构造函数用法
+1.选择器
+2.把dom对象变为jQuery对象
+3.接受回调函数，作为网页加载完成的入口 （$(){...}）
+4.接受一个html的字符串，创建成动态的dom的包装对象
+
+DOM节点操作
+append()           在最后面追加子节点                    appendTo      追加至
+perpend()	         在最前面追加子节点	         perpendTo
+
+
+after()		之后添加（兄弟节点）
+a.insertAfter(b)	a插入到b之后（兄弟节点）          insertBefore()
+	
+a.wrap('<div></div>')	把所有的a目标，都用div包裹		unwrap()
+a.wrapAll('<div></div>')	把所有的a目标，都用一个div包裹
+a.wrapInner('<div></div>')	把所有的a目标的子元素，都用div包裹
+
+替换
+a.replaceAll(b)     把所有b对象替换成a
+a.replaceWith(b)	把a替换成b
+
+清空
+empty（）	清空所有子节点
+remove（）	删除自身
+
+复制节点
+clone（）	克隆一个节点
+
+动态创建节点
+$("<div></div>")
+
+获取元素内部宽高
+$dom.innerHeight()      	width+padding
+$dom.innerWidth()
+
+$dom.outHeight()		width+padding+border
+$dom.outHeight(true)  	width+padding+border+margin
+
+width()                    width
+
+获取设置文档滚动高度
+$(window).scrollTop()    获取滚动高度
+
+jQuery 动画
+$dom.show(time,'swing',fn)	fn回调函数	swing线性
+$dom.hide(time,'swing',fn)
+
+$dom.slideUp(time,'swing',fn) 		滑上	元素向上滑动隐藏
+$dom.slideDown（time,'swing',fn）	滑下
+$dom.slideToggle([speed],[easing],fn)
+
+$dom.fadeIn()	淡入（透明度改变）
+$dom.fadeOut()
+$dom.fadeTo(opacity)       透明度到	
+
+
+jQuery 自定义动画
+$dom.animate(params,[]speed],[easing],fn)	params	属性终值集合，是一个对象
+	params={
+		top:"50px"
+		left："+=30px"	每次执行距左侧都增加30px
+		只要是属性都可操作，scrollTop这样的也可以
+	}
+
+jQuery 结束和停止动画
+$dom.finish()	$dom的动画效果直接到达最终效果
+$dom.stop(false)	传入一个参数false或不传，则结束当前动画，立刻执行后续动画
+		若传入true，则结束当前动画，后续动画也不执行
+
+$dom.stop(true，true)	第一个参数若传入true，则结束当前动画，后续动画也不执行
+			第二个参数若传入true，则直接到达动画最终状态
+
+延迟
+$dom.delay(time).fadeIn()	延迟后在执行
+
+循环
+原生数组循环  arr.forEach(funtion(ele,index){
+})
+jquery数组循环
+arr.each(function(index,ele){...})				数组上的循环
+arr.map(function(){i,e}{  return ...  })			循环操作，且有返回值，形成一个新的数组
+
+jQuery构造函数属性和方法
+
+jQuery.each(obj,function(n,i){....})		对数组中的每个元素处理	（原型上的循环）
+
+jQuery.map(obj，function(val,i){...return ...  必须有返回值。。。})				对数组中的每个元素处理，并返回，形成一个新的数组
+
+$.grep([...],function(e,i){	对数组中的每个元素处理，并返回，形成一个新的数组
+	return e>0
+})
+
+注意：原型上的方法和数组上的方法区别：1.参数代表值相反
+
+
+jQuery构造函数的扩展对象的方法（继承）extend
+
+在target上添加obj1，并可以返回一个新对象=target，若有相同属性方法，后者覆盖前者
+$.extend([deep],target,obj1) 		[  ]写的值是可省略的，默认浅拷贝，（只拷贝引用关系，不拷贝具体的指）
+				[deep] 为ture  ，则是深拷贝，完全存值，而不存引用
+
+其他构造函数上的方法和属性
+$.noop()		返回一个空数组
+$.isArray(obj)	判断是否为数组
+$.trim(obj)		去掉前后空格
+
+链式编程和隐式迭代
+链式编程：返回jquery包装对象自身
+	有方法会破坏链式节点
+	parents（）   。。。相关节点操作。。
+	解决：.end()
+		 $dom.parents().hide().end().hide()	
+隐式迭代：
+
+jQuery扩展插件
+一：原型上扩展
+($(){
+	$,fn.自定义名称=function(){...}	   原型上添加方法
+})
+二：构造函数上扩展(不推荐)
+jQuery.自定义名称=function(){...}
+
+三：jquery的extend方法(不传target时，可以直接队jQuery构造函数扩展属性和方法)
+$.extend({
+	abc:function(){
+		console.log(...)
+	}
+})
+

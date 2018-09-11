@@ -1,0 +1,15 @@
+问题：选中与操作
+select
+	js：
+		var sel=document.getElementById('sel');
+		sel.onchange=function(){
+			console.log(this.value)
+		}
+
+	jq：
+		$(function(){
+			$("#sel").bind('change',function(){
+				console.log($(this).val())
+			})
+		})
+

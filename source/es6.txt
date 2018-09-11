@@ -1,0 +1,396 @@
+提案变成标准，经历5个阶段
+	Stage 0	展示阶段
+	Stage 1	征求意见阶段
+	Stage 2	草案阶段（基本可使用了）
+	Stage 3	候选阶段
+	Stage 4	定案阶段
+
+任何人都可向  标准委员会（TC39），提意见
+
+=====================================================================
+关于定义（声明）变量
+
+let：相当于var ，但有其他差别，但var定义的全局变量属于window，let，const不同
+const：常量，不可改变
+
+{
+console.log(a)    //TDZ   暂时性死区域（在变量定义之前使用，都是报错的，所以定义之前都是TDZ）
+let a = 5;
+}
+
+
+let注意事项：1.没有预解析，不存在变量提升（在代码块内，在let变量定义前使用，都报错）==>先定义，在使用
+	    2.在同一级代码块内，不能重复定义（父级与子级可以）
+	    3.for循环中条件判断区域和执行区域=父级和子级，所以可以定义名称相同的变量名，而不会报错
+
+const：和let特性一样
+	const定义变量不能修改
+	const定义变量必须有值，不能赋值，若const=对象，可利用对象的特性更改值
+
+=======================================================================
+解构赋值
+	let [a,b]=[12,3]
+	let {a,b:haha}=Json
+	console.log(a,b) === console.log(a,haha)     haha是b的别名，结果一样
+	注意：两边结构格式保持一致
+
+	解构时，可以给默认值
+	let {a,b='无值'}=Json
+	console.log(a,b)    若b没有值或等于undefined时，b为“无值”，null除外
+	
+	交换两个数的值
+	let a =5;
+	let b=10;
+	[a,b]=[b,a]
+
+=========================================================================
+字符串模板  ` `   
+	在字符串模板中加变量  ${  变量名 }
+	优;可随意换行
+
+字符串查找
+	es5 str.indexOf(要找的东西)   返回索引位置 ，没找到返回-1 
+	str.includes(要找的东西)   返回true / false
+
+字符串是否已谁开头
+	str.startsWith(str)         返回true /false
+
+字符串是否已谁结尾
+	str.endsWith(str)         返回true /false
+重复字符串
+	str.repeat(重复次数)
+填充字符串
+	str.padStart(填充后的整个字符长度，填充内容）
+	str.parEnd(填充后的整个字符长度，填充内容)
+
+=====================================================
+函数变化： 
+	1.函数默认参数
+		function test({x=0,y=0}={}){
+				console.log(x,y)
+			}
+			test()
+	2.函数默认参数已经定义，不能再使用let，const声明
+		function test(a=19){
+				let a=12           报错
+				console.log(a)    
+			}
+			test()
+
+
+扩展运算符，rest运算符    ...
+...[1,2,3,4] =>   1 2 3 4
+...1 2 3 4   =>  [1,2,3,4]
+
+箭头函数
+
+test=  ()=>return值
+
+          ()=>{ 执行语句 }
+
+箭头函数左侧为参数，右侧为执行语句
+
+注意：1.this问题，指向定义函数所在的对象，而不是运行时的的所在对象
+          2.箭头函数中没有arguments，用rest运算符
+          3.箭头函数不能当做构造函数
+
+=========================================================
+数组
+
+ES5新增的一些东西
+	arr.forEach(循环回调函数，this指向谁)
+	循环：
+		arr.forEach()
+			var arr=[1,23,4,5];
+			arr.forEach(function(item,index,arr){    item为当前值  index为当前索引值  arr为该数组
+				console.log(item,index,arr)
+			},a（这里的对象会更改循环中的this指向）)
+
+		arr.map()
+			 与forEach类似，返回一个判断语句，但有返回值，通常和return一起用，若不用，则和forEach一样
+			使用场景：循环后台传来的数据，并将其好循环遍历，并且进行某种修改，然后返回，形成一个新的数组，可以满足自己的数据格式需求
+
+		arr.filter()   过滤
+			 与map类似，返回一个判断语句，若返回为true，则循环的该条数据会返回，反之，不会返回
+
+		arr.some()  类似查找 返回一个判断语句，  return item=='sss'  当前值等于sss，则返回true  ，判断数组中某一个元素符合条件
+		arr.every()  返回一个判断语句， 所有的元素都满足条件，则返回true，反之为false
+	- 以上方法默认都会循环 -
+		
+
+		var arr=[1,23,4,5];	
+		arr.reduce()    从左往右运算
+			
+			let a=arr.reduce((prev,cur,index,arr)=>{  prev  上一个结果    cur是当前值
+				return prev+cur
+			})
+			console.log(a)
+
+			Math.pow(a,b)   a的b次方
+			Es2017新增的一个幂运算符
+			2**3    2的3次方
+		arr.reduceRight()    从右往左运算
+
+
+for...of...     
+	
+	arr.keys()   数组下标
+	arr.entries()  数组某一项	
+
+	for(let val of arr){
+		console.log(val)	
+	}	
+	for(let val of arr.keys()){
+		console.log(val)	
+	}
+========================================================================
+ES6方法：
+Array.from(类数组)     把类数组对象转成数组，返回一个新数组
+Array.of()            把一组值转为数组
+	Array.of(“a”,"b","c")   =>    ["a","b","c"] 
+arr.find()    查找，满足一次后停止。只找一个值
+	var arr=[1,23,4,5];
+	let a=arr.find((val,index,arr)=>{
+		return val>4
+	})
+	console.log(a)
+arr.fill( 填充内容， 起始位置 ， 结束位置 )   填充                 [  起始位置  ,  结束位置 )
+	var arr=new Array(10);
+	let a=arr.fill("ok",1,3)      
+	console.log(a)
+arr.findindex()  与find的使用方法类似
+arr.includes('值')          查询数组中是否包含该值，返回true/false
+
+======================================================================
+对象：
+	json
+	对象的简洁语法
+	{
+	name ，                       name     ==   name:name
+	show(){
+		console.log(a)	            函数简写
+	}
+	}
+
+Object.is(a,b)       判断a，b是否相等，返回true、false      解决了NaN不等于自身的问题，（经过他判断  +0！=-0    为true）
+
+Object.assign()  用来合并对象,会创建一个新的对象，不会存在引用关系
+	Object.assign(目标(新)对象，对象1，对象2.....)
+		      从左自右依次合并对象，若对象中有重复的属性，则后者覆盖前者。
+
+ES2017引入：
+Object.key(obj)
+Object.entries(obj)
+Object.values(obj)
+
+==================================================================
+Promise   承诺，许诺                作用：解决异步回调问题
+
+
+			let a = 2;
+			let pro=new Promise((resolve,reject)=>{           创建Promise
+				if(a==10){
+					resolve('cg')
+				}else{
+					reject('sb')
+				}
+			})
+			pro.then(res=>{				成功调用，失败调用
+				console.log(res)
+			},
+			rej=>{
+				console.log(rej)
+			})
+			pro.catch(rej=>{     				catch专门用于捕获错误
+				console.log(rej)
+			})
+
+Promise方法
+	Promise.resolve('aa')   将现有的东西，转为一个promise对象，是resolve状态，是成功的状态。
+	Promise.reject('aa')           失败的状态
+	Promise.all([p1,p2,p3])   将多个promise打包，生成一个新的promise对象，必须确保所有的promise对象都是resolve状态
+	Promise.race([p1,p2,p3])     有一个成功就返回
+
+
+========================================================================
+模块化：   1）如何定义模块？
+		export  导出的东西，可导出多次
+		export{
+			a as aa,     别名
+			b as bb
+		}
+	2）如何使用？
+		import  模块
+		import{ aa as  a,bb as b } from "...."       别名
+
+	<script type='module'></script>
+
+import特点：1）可以相对路径，也可以绝对
+	    2）相同的模块，只会导入一次，不管你写了几次
+	    3）import ‘./modules/1.js’   相当于引入文件
+	    4）会有提升，自动提升到顶部，自动自行
+	    5）引入的模块，若模块的值改变，则引入的值也改变（模块中有定时器。。。）
+
+
+若导出模块时，用export default ，则引用不用{}      import a from '....'
+若导出模块时，用export  ，则引用使用{}      import {a，b} from '....'
+若导出模块时，两者都有    则 import aa,{a，b} from '....'
+
+此模块不成功则加载另一个模块
+import('模块路径').then(res=>{
+	成功时执行
+})
+
+各个操作相互结合使用
+
+
+================================================
+程序中的类
+ES6
+			class Person{
+				constructor(name,age){
+					this.name=name;
+					this.age=age;
+					console.log(`${name},  ${age}`)
+				}
+				showname(){
+					console.log(this.name)
+				}
+			}
+			let p1=new Person("gdl",18);
+			p1.showname()
+
+			注意：	创建类Person，首字母大写，类中方法没有逗号隔开
+				在constructor方法中写属性，方法直接写在外面，
+				const Person=class{。。。}   这种方法声明类也可以
+				class不会提升，定义以后才可以使用
+			
+			利用变量代替函数名
+			let a='strive'
+			class Person{
+				constructor(name,age){
+					this.name=name;
+					this.age=age;
+					console.log(`${name},  ${age}`)
+				}
+				showname(){
+					console.log(this.name)
+				}
+				[a](){
+					console.log("执行了")
+				}
+			}
+			let p1=new Person("gdl",18);
+			p1.showname()
+			p1[a]()
+			
+			函数中用 [a](){ 。。。 }  代替  ，执行时 p1[a]()
+	
+	矫正this
+		call：call(this,arg1,arg2...）	
+		apply:apply(this,[arg1,arg2,...])
+		bind(this)       只管this，参数不管
+
+	利用结构赋值提取实例的方法，会导致this指向问题，解决
+		在constructor中    this.方法名=this.方法名.bind(this)    矫正方法的this指向
+
+class里取值函数,存值函数
+	
+			class Person{
+				constructor(name,age){
+					this.name=name;
+					this.age=age;
+					console.log(`${name},  ${age}`)
+				}
+				set aaa(val){
+					console.log(`设置${val}`)
+				}
+				get aaa(){
+					console.log("获取")
+				}
+			}
+			let p1=new Person("gdl",18);
+			p1.aaa                 获取值触发get 方法
+			p1.aaa='sss'	建立值获取set方法，并将值传入方法中
+			
+			注意：set方法中要有参数，因为要有值传入，否则报错。
+
+静态方法  ：直接通过类名调用，而不经过new
+
+			class Person{
+				constructor(name,age){
+					this.name=name;
+					this.age=age;
+					console.log(`${name},  ${age}`)
+				}
+				static aa(){
+					console.log('aaa')
+				}
+			}
+			let p1=new Person("gdl",18);
+			Person.aa()
+
+			通过static声明，然后通过类名直接调用，不用new
+	ES5继承：
+		属性继承：父类名.call(this,参数。。。)
+		方法继承：子类名.prototype=new 父类名()
+	ES6继承 	
+		class 子类名 extends 父类名{ ... }
+		例子：	
+			class Person{
+				constructor(name,age){
+					this.name=name;
+					this.age=age;
+					console.log(`${name},  ${age}`)
+				}
+				static aa(){
+					console.log('aaa')
+				}
+				a(){...}
+			}
+			
+			class zi extends Person{
+				constructor(a,b,c){            构建子级自身所需参数
+					super(b,c)         相当于执行一遍父级，并传入父级所需参数
+					this.hieght=a
+				}
+				sg(){
+					super.a()           采用此方法可调用父级的方法，后面又可执行子级自己的方法
+					console.log(`${this.hieght}`)
+				}
+			}
+			let p1=new zi(167,"gdl",18);
+			p1.sg()
+
+=====================================================================
+ES6数据类型  
+	number  string boolean undefined null symbol
+	symbol   
+		1）不能使用new构建
+		2）symbol（）返回一个唯一的值
+		3）如果symbol作为key，for in  循环不出来
+		4）symbol是一个单数据类型，就叫symbol，基本类型
+
+=========================================================================
+generator函数（解决异步，深度嵌套的问题）
+
+			function * asd(){
+				yield 'a';
+				yield "b";
+				return 'gdl'
+			}
+			let p1=asd();		生成一个generator对象
+			console.log(typeof p1)              object
+
+			p1.next()               		会返回一个{value: "a", done: false}      done: false 表示后面还有yield 值
+			
+			也可以用for of 循环generator对象，但只会循环出yield 的值
+
+			-------------------------------------------------
+			function * asd(){
+				yield 'a';
+				yield "b";
+				return 'gdl'
+			}
+			let [z,x]=asd();    		采用解构赋值用中括号，大括号不行
+			console.log(z)

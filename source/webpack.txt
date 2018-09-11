@@ -1,0 +1,350 @@
+webpack也是一个模块，需要安装 npm install webpack --save-dev
+
+const path=require('path')           path是nodejs自带的模块
+module.exports={
+	entry:{
+		one:["./src/one.js","./src/two.js"]                        //将两个js文件打包为一个文件
+	},
+	output:{
+		path:path.resolve(__dirname,"dist"),
+		filename:'two.js'
+	},
+	module:{
+
+	},
+	plugins:[],
+	devServer:{
+
+	},
+}
+
+单页面可以，多页面怎么用？
+--------------多个js，打包成多js
+const path=require('path')
+module.exports={
+	entry:{
+		one:["./src/one.js","./src/two.js"]                        //将两个js文件打包为一个文件
+		two:["./src/one.js","./src/two.js"]  
+	},
+	output:{
+		path:path.resolve(__dirname,"dist"),
+		filename:'[name].js'				按照名字建立相应的js（one 和 two）
+	},
+	module:{
+
+	},
+	plugins:[],
+	devServer:{
+
+	},
+}
+
+
+webpack热更新（实时更新），已经禁用
+module.exports={
+	entry:{
+		one:["./src/one.js","./src/two.js"]                        //将两个js文件打包为一个文件
+		two:["./src/one.js","./src/two.js"]  
+	},
+	output:{
+		path:path.resolve(__dirname,"dist"),
+		filename:'[name].js'				按照名字建立相应的js（one 和 two）
+	},
+	module:{
+
+	},
+	plugins:[],
+	devServer:{
+		contentBase:path.resolve(__dirname,'./'),		设置服务时打开的文件首页位置
+		host:"本机ip"，
+		compress:true,		//html压缩（服务器压缩）
+		port：80			设置访问端口，若为80，直接IP地址访问
+	},
+
+}
+
+
+
+
+有时还需安装热更新
+npm install webpack-dev-server --save-dev
+然后提示差什么，就下载什么
+
+
+
+设置热更新的虚拟存储
+const path=require('path')
+module.exports={
+	entry:{
+		one1:["./src/one.js","./src/two.js"],
+		two2:"./src/two.js"
+	},
+	output:{
+		path:path.resolve(__dirname,"dist"),
+		filename:'[name].js',
+		publicPath:'/temp/'			设置虚拟的存储地址，在temp下，更改html的js引用
+	},
+	module:{
+
+	},
+	plugins:[],
+	devServer:{
+		contentBase:path.resolve(__dirname,'./'),
+		host:'192.168.2.237',
+		compress:true,
+		port:'8765'
+	},
+}
+webpack-dev-server的hot属性已经禁用
+
+当修改关联js时，webpack-dev-server服务会变化，将改变的存入虚拟存储，此时要设置output的publicPath,这是设置虚拟路径，所有的改变将会存入虚拟的存储，改变html的引用，即可实现改变js，浏览器发生改变，要等待5-10s，（改变html呢）
+
+设置npm快捷方式（设置时必须以双引号包裹，否则报错）
+{
+  "name": "myweb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    'server':'webpack-dev-server',		使用时，npm run server 即可
+    'build':'webpack'
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "webpack-cli": "^3.1.0"
+  },
+  "devDependencies": {
+    "webpack": "^4.16.5",
+    "webpack-dev-server": "^3.1.5"
+  }
+}
+
+
+将css打包到js
+下载模块 css-loader  style-loader
+配置：
+
+	module: {
+	    rules: [				rules: webpack2>= 才有，1没有
+	      {
+	        test: /\.css$/,
+	        use: [ 'style-loader', 'css-loader' ]
+	      }
+	    ]
+	}
+
+在js中也要引入css
+import css from “./a.css”
+
+
+
+压缩js的插件，webpack自带
+在webpack.config.js中写入
+const uglifyjs=require('uglifyjs-webpack-plugin')
+并配置
+		plugins:[
+			new uglifyjs(),
+		],
+重新打包即可
+
+复制html的插件，webpack自带，若没有就下载
+声明时，htmlWebpackPlugin，必须用小驼峰写法，否则报错
+		plugins:[
+			new uglifyjs(),
+			new htmlWebpackPlugin({
+				removeAttributeQuotes:true,
+				hash:true,				
+				template:'./src/index.html',		要打包的html
+				pojectPath:"asd"			设置的路径，打包后的html可引用或使用
+			})
+		],
+在html中使用，可使用pojectPath的设置值
+	<ul title='<%= htmlWebpackPlugin.options.pojectPath %>'>
+		<li><a href="">游戏</a></li>
+		<li><a href="">学习</a></li>
+		<li><a href="">文档</a></li>
+		<li><a href="">日记</a></li>
+	</ul>
+
+
+复制多个html，并使其有相应的js打包文件
+	plugins:[
+		new uglifyjs(),
+		new htmlWebpackPlugin({			要复制几个html，就写多少个实例
+				filename:'index.html',
+				removeAttributeQuotes:true,
+				hash:true,
+				template:'./src/index.html',
+				pojectPath:"asd",
+				chunks:['two']		复制的html要引用的js，值是entry的键值
+		}),
+		new htmlWebpackPlugin({
+				filename:'other.html',                  
+				removeAttributeQuotes:true,
+				hash:true,
+				template:'./src/other.html',
+				pojectPath:"other",
+				chunks:['one'，‘two’]
+				chunksSortMode: 'manual'	使插入的js按顺序排列，设置参数
+		})
+		],
+
+	
+
+图片打包处理
+file-loader  url-loader
+模块中设置
+	{
+	        test: /\.(png|jpg|gif)$/i,
+	        use: [
+	          {
+	            loader: 'url-loader',
+	            options: {
+	              limit: 8192			大于8192B，则是路径，小于则是base64
+
+	            }
+	          }
+	        ]
+	      }
+
+问题：css过多，js过少，如何提取csss？提取出来形成多个请求，避免卡顿
+更改文件名可以直接在生成时构建项目目录，js直接改文件名就行，css要提取（过大才要提取出来，否则就生成一个js并引入）？img要判断？（小于用base64，大于再分文件夹）
+
+css提取
+
+引入
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+
+更改css module 配置
+	{
+	        test: /\.css$/,
+	        use: ExtractTextPlugin.extract({
+	          fallback: "style-loader",
+	          use: "css-loader"
+	        })
+	      }
+
+配置插件
+new ExtractTextPlugin("[name].css"),		文件输出是的文件名，和其路径（适合多个css）
+
+若有chunks相关问题，请dos
+npm install extract-text-webpack-plugin@next  执行这个试试
+
+若js中引入多个css，则提取后的css合并为一个css（有设置css提取的条件吗）
+
+	output:{
+		path:path.resolve(__dirname,"dist"),
+		filename:'assets/js/[name].js',
+		publicPath:'/aaa/'			在开热更新时的虚拟路径，打包的文件也会自动加上该路径
+	},
+
+
+js小于设定值时，变为base64存入js中，过大时，成为单独的图片文件放入dist文件夹中
+
+
+url-loader
+url-loader依赖于file-loader
+	{
+	        test: /\.(png|jpg|gif)$/i,
+		    use: [
+		      {
+		        loader: 'url-loader',
+		        options: {
+		          limit: 8192,		
+		          outputPath:'assets/img/',		设置超出限制时，output文件的存放路径
+		          name:'[name].[ext]'			[name]:原来的名称 [ext]:原来的后缀    默认是hash值
+		        }
+		      }
+		    ]
+	      }
+遇见问题	设置outputPath无效
+解决：重新install  url-loader
+
+
+图片插入方式
+1.在css中以背景图片的方式插入
+2.在js中以对象的方式引入（引入后获得对象，创建HTML元素，src指向，并插入）
+3.在html中直接引入
+
+
+
+在html中插入图片
+html-withimg-loader
+支持在  html中   #include("./layout/top.html")   引入其他html
+
+		{
+		        test: /\.(htm|html)$/i,
+		        loader: 'html-withimg-loader'
+		    }
+
+
+加载json，直接require引入，再调用即可
+webpack热更新，是直接刷新，不是局部变化
+
+
+生产环境与开发环境设置
+在dos中
+npm install  --production
+
+在package.json中设置
+window设置
+"scripts": {
+    "server": "webpack-dev-server",
+    "build": "set aaa=dev&webpack"   
+  },
+mac设置
+"scripts": {
+    "server": "webpack-dev-server",
+    "build": "export aaa=dev&&webpack"   
+  },
+在webpack.config.js中
+if(process.env.aaa=='edv'){		在进程中能获得aaa的值，并进行判断
+	...
+}
+
+
+CMD与AMD
+CMD:require，同步
+AMD：异步
+
+快速引入模块（在plugins中设置）
+new webpack.ProvidePlugin({
+	$:'jquery',
+	...			快速引入模块	
+})
+
+
+实时打包，生成新的dist文件，不会在webpack-dev-server服务器显示，直接生成在dist目录
+webpack-dev-server可以将dist的文件以服务器的方式显示，webpack --watch是时时打包，不显示
+
+
+webpack --watch
+
+	output:{
+		path:path.resolve(__dirname,"dist"),
+		filename:'assets/js/[name].js',
+		publicPath:'/aaa/',
+		hotUpdateChunkFilename:'./hot/hot-update.js',		设置更新的文件统一为该js，不重复
+		hotUpdateMainFilename:'./hot/hot-update.json'
+	}
+
+watchOptions:{
+	    poll:1000,//监测时间的间隔(ms)
+	    aggregateTimeout:500, //防止重复按键，500毫米内算按键一次
+	    ignored:/node_modules/,//不监测
+	}
+
+如何把公共模块独立出去，实现依靠浏览器缓存，不用再次加载
+SplitChunksPlugin：实现块的提取（提取出多个块），首次加载时才会下载，不会同时在index时一起下载，（按需下载，并实现缓存共用）。。。
+
+
+把静态资源文件发布到指定环境（拷贝文件）
+const copyWebpackPlugin=require("copy-webpack-plugin");
+
+		 new copyWebpackPlugin([{
+		 		 	from:__dirname+'/src/assets/img',                    目标文件
+		 		 	to:'images'				输出路径
+		 		 }])
+
