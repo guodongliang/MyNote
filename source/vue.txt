@@ -172,7 +172,7 @@ export{
 
 main.js中
 
-import * as filters from './filter/filter.js'
+import * as filters from './filter/filter.js'			es6语法？
 //遍历所有导出的过滤器并添加到全局过滤器
 Object.keys(filters).forEach((key) => {
   Vue.filter(key, filters[key]);
