@@ -64,8 +64,8 @@ v-on:click.meta='a'	      元键和点击必须同时按才会有效
 如何获取目标对象的value？ 触发对象时，会有事件对象event，
 事件对象event，event.target指向其对象元素
 
-
-
+.exact 修饰符（2.5.0 新增）
+v-on:click.exact ="a" 	没有任何系统修饰符按下时才触发，唯一只能click才有效
 -------------------------------------------------------------------------------------------------------
 
 
@@ -115,12 +115,70 @@ v-for='(item,val) in a'       但是，此时 item  为键  ,  val  为值
 
 a可以为数字，对象，数组，字符串时
 
+由于 JavaScript 的限制，Vue 不能检测以下变动的数组：
+当你利用索引直接设置一个项时，例如：vm.items[indexOfItem] = newValue
+当你修改数组的长度时，例如：vm.items.length = newLength
 js对数组的引用，数组的引用的值改变，但是数组的引用未改变。
+
 Vue.set(this.b[1],10)      将数组b的第二项值改变，并重新渲染dom（内存地址未改变，所以值不会改变。此方法是vue针对此，采取的解决方案）
 this.b[1]:目标对象
 10:改变值
 
 vue重写了push，具有监察者模式，数组的很多方法都重写了，使用这些方法改变值后，vue会自动监听，并改变值
+或
+Vue.set(vm.items, indexOfItem, newValue)	vm.items：数组	indexOfItem：下标
+
+Vue.set和vm.$set是一样的  vm是实例对象
+
+-----------------------------data对象添加或额外添加新的属性----------------------------------------
+
+由于 JavaScript 的限制，Vue 不能检测对象属性的添加或删除：
+||||------
+var vm = new Vue({
+  data: {
+    a: 1
+  }
+})
+// `vm.a` 现在是响应式的
+
+vm.b = 2
+// `vm.b` 不是响应式的
+||||------
+对于已经创建的实例，Vue 不能动态添加根级别的响应式属性。可以使用 Vue.set(object, key, value)方法向嵌套对象
+
+对已存在的对象（data中的），赋予多个新的属性，比如使用 Object.assign()或 _.extend()
+不能这样写
+Object.assign(vm.userProfile, {
+  age: 27,
+  favoriteColor: 'Vue Green'
+})
+要这样写
+vm.userProfile = Object.assign({}, vm.userProfile, {
+  age: 27,
+  favoriteColor: 'Vue Green'
+})
+
+-----------------------------data对象添加或额外添加新的属性-end---------------------------------------
+
+----------------------------vue-cli工作中如何自定义一个过滤器？--------------------------------
+filter.js中
+
+function zdy(n){
+	return n+10
+}
+export{
+	zdy
+}
+
+main.js中
+
+import * as filters from './filter/filter.js'
+//遍历所有导出的过滤器并添加到全局过滤器
+Object.keys(filters).forEach((key) => {
+  Vue.filter(key, filters[key]);
+})
+
+----------------------------vue-cli工作中如何自定义一个过滤器？end--------------------------------
 
 
 v-if  模板复用
@@ -456,6 +514,17 @@ License（证书）：一般用MIT
 安装完成后，安装必须包，并显示
 
 package-lock.json  是npm5.0的文件。能更快地访问文件地址（直接读取下载地址，下载更快
+
+用于查看 vue-cli 生产环境部署资源文件大小的 npm命令：npm run build --report
+
+vue-cli进行工程升级
+npm-check-updates
+
+安装	npm install npm-check-updates -g
+检测所有的最新版本	ncu -a
+安装最新版本  	npm i
+
+
 
 resolve: {
     alias: {

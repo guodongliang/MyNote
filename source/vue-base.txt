@@ -7,4 +7,56 @@ vm.$watch('a', function (newValue, oldValue) {
   // 这个回调将在 `vm.a` 改变后调用
 })
 
-实例生命周期钩子
+vue生命周期
+创建（creat） ——> 挂载（mount） ——> 更新（update） ——> 销毁（destory）
+钩子在服务器渲染时不会调用（ssr）
+1.beforeCreate（*开始创建）
+2.created(完成数据观测，实例中属性方法的运算，watch/event事件回调，挂载尚未开始，$el不可见)（*初始化数据）
+3.deforeMount(挂载开始前，相关render函数首次被调用)（*编译模板）
+4.mounted(el被新的Vm.$el替换，并挂载到实例上(模板中HTML渲染到页面中))（*挂载Dom->渲染）
+5.beforeUpdate(数据更新前调用，发生在虚拟DOM重新渲染和打补丁之前，可以在钩子中进一步更改状态，而不会触发渲染过程)
+6.updated(组件DOM根据虚拟DOM的重新渲染和补丁进行变化)（*更新->渲染）
+7.beforeDestroy(销毁前，实例依然可用)
+8.destroy(销毁调用，指定事件解绑，子实例和监听器被移除)
+
+第一次页面加载时会触发 beforeCreate, created, beforeMount, mounted 这几个钩子
+DOM 渲染在 mounted 中就已经完成了
+
+简单描述每个周期具体适合哪些场景？
+beforecreate : 可以在这加个loading事件，在加载实例时触发 
+created : 初始化完成时的事件写在这里，如在这结束loading事件，异步请求也适宜在这里调用
+mounted : 挂载元素，获取到DOM节点
+updated : 如果对数据统一处理，在这里写上相应函数
+beforeDestroy : 可以做一个确认停止事件的确认框
+
+$nextTick : 更新数据后立即操作dom?
+MVC模式
+V:view视图  （前端）
+M：model数据模型	(后台)
+C：控制器
+后台与前台的交互，直接由控制器来控制，不在直接进行交互
+view依赖数据模型（model）
+视图只适合后台的该数据，无法实现模块化
+前 ——> C ——> M（观察者模式，若有变化，则告诉前端渲染） ——> 前
+
+继续诞生
+
+MVP模式
+V:view视图  （前端）
+M：model数据模型	(后台)
+P：Persenter
+前后交互，由P来实现
+可以实现模块化
+前 ——> P  ——> M ——> p ——> 前
+
+继续诞生
+
+MVVM模式
+V:view视图  （前端）
+M：model数据模型	(后台)
+VM：ViewModel
+前后交互，由P来实现
+可以实现模块化
+前 ——> VM  ——> M ——> VM 
+在VM中有Binder（将数据和视图进行绑定），只要数据改变，view会自动改变，不用再操作数据改变
+
