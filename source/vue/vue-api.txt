@@ -1,0 +1,42 @@
+全局API【】【】【】【】【】【】【】【】【】【】【】【】【】【】【】【】
+
+----------------------Vue.extend( options )
+构建了一个Vue子类，参数子一个组件选项对象（构建组件时选项的样子）
+
+// 创建构造器
+var Profile = Vue.extend({
+  template: '<p>{{firstName}} {{lastName}} aka {{alias}}</p>',
+  data: function () {
+    return {
+      firstName: 'Walter',
+      lastName: 'White',
+      alias: 'Heisenberg'
+    }
+  }
+})
+// 创建 Profile 实例，并挂载到一个元素上。
+new Profile().$mount('#mount-point')
+
+实例方法/生命周期【】【】【】【】【】【】【】【】【】【】【】【】【】【】【】【】
+
+vm.$mount( [elementOrSelector] )
+手动的挂载一个未挂载的实例
+
+var MyComponent = Vue.extend({
+  template: '<div>Hello!</div>'
+})
+
+// 创建并挂载到 #app (会替换 #app)
+new MyComponent().$mount('#app')
+
+// 同上
+new MyComponent({ el: '#app' })
+
+// 或者，在文档之外渲染并且随后挂载
+var component = new MyComponent().$mount()
+document.getElementById('app').appendChild(component.$el)
+
+
+
+
+

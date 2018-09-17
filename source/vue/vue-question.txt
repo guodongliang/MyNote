@@ -1,0 +1,11 @@
+【
+// 或者，在文档之外渲染并且随后挂载
+var component = new MyComponent().$mount()
+document.getElementById('app').appendChild(component.$el)
+
+1.appendChild的具体用法渲染
+2.渲染和挂载与实例化后和$mount()的关系
+
+
+2.$mount()是将实例挂载到DOM元素上，渲染呢
+】

@@ -32,6 +32,51 @@ Vue模板
 	})
 </script>
 
+Vue组件模板的方式
+1.\	html模板每个换行后添加\
+2.``	ES6语法
+3.template	
+	body中
+		<template id="asd">
+			<h1>hello</h1>
+		</template>
+	vue实例中
+		template:'#asd',
+4.script标签中写html
+	body中
+		<script type="text/x-template" id="qq">
+			<h1>world!</h1>
+		</script>
+	vue实例中
+		template:'#asd',
+5.以vue单文件的方式
+
+Vue组件注意事项
+1.单向数据流
+	父会影响子，子不会影响父，但要避免操作连接值
+2.正确的嵌套方式与is属性
+	在html特殊嵌套结构中，若不满足，则会改变结构（html结构发生变化）。解决：使用is属性=组件名
+	正常情况下，劲量避免使用is属性，采用正确的嵌套
+3.数据作用域
+	本组件的数据，只作用于本组件
+4.原生事件 .native   
+	在组件上添加事件不会被触发，需添加修饰符才可以
+5.$refs（通过DOM方式修改值，不是数据修改）	
+	<h1 ref='zhi'></h1>	设置标记
+	this.$refs.zhi.innerHTML='mnm'	通过得到标记对象进行相关DOM操作
+
+非父子组件通信
+
+
+
+
+
+
+
+
+
+
+
 可以通过 {{ }} 在 vue 模板中输出vue的data 值；                                 输入
 对属性采用 {{ }} 赋值方式，不会成功。解决法案---> vue 指令
 
