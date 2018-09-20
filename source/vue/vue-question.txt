@@ -9,3 +9,10 @@ document.getElementById('app').appendChild(component.$el)
 
 2.$mount()是将实例挂载到DOM元素上，渲染呢
 】
+
+【
+在组件上绑定属性，props获取值，绑定属性的命名范围
+1.不要驼峰命名（会与js中 横杠时默认小驼峰写法冲突 ）
+2.全部小写
+3.可以使用横杠，接收时一样，但在html中使用时，要小驼峰写法
+】

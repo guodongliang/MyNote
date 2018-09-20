@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div id="app" >
+		<!-- <p v-bind:title="msg | qk">{{msg|qk}}</p> -->
+		<div>{{mount}}</div>
+		<my-one :mount='mount' ></my-one>
+		<my-two :mount='mount' ></my-two>
+	</div>
+	<script type="text/javascript" src="./vue.js"></script>
+	<!-- <script type="text/javascript">
+		new Vue({
+			el:'#app',
+			data:{
+				msg:'hello world!'
+			},
+			filters:{
+				fu:function(val){
+					return val.split(" ").map(function(item){
+						return item.charAt(0).toUpperCase()+item.slice(1)+" ";
+					}).join(" ")
+					
+				},
+				qk:function(val){
+					return val.toString().replace(/ /g,"")
+				}
+			}
+		})
+	</script> -->
+	<!-- <script type="text/x-template" id="qq">
+		<h1>world!</h1>
+	</script>
+	<script>
+		var newcomponnet=Vue.extend({
+			data:function(){
+				return {
+					mount:'123'
+				}
+			},
+			mounted:function(){
+				this.$refs.zhi.innerHTML='mnm'
+			}
+		})
+		new newcomponnet().$mount('#app')
+	</script> -->
+	<script>
+		var newVM=new Vue();
+		new Vue({
+			el:'#app',
+			data:{
+				mount:0
+			},
+			components:{
+				'my-one':{
+					template:'<button type="button" @click="mou">+</button>',
+					props:['mount'],
+					methods:{
+						mou:function(){
+							newVM.$emit('gy',this.mount+1)
+						}
+					}
+				},
+				'my-two':{
+					template:'<button type="button" @click="mou">-</button>',
+					props:['mount'],
+					methods:{
+						mou:function(){
+							newVM.$emit('gy',this.mount-1)
+						}
+					}						
+				}
+			},
+			mounted:function(){
+				newVM.$on('gy',function(zhi){
+					this.mount=zhi
+				}.bind(this))
+			}
+		})
+	</script>
+</body>
+</html>

@@ -66,14 +66,14 @@ Vue组件注意事项
 	this.$refs.zhi.innerHTML='mnm'	通过得到标记对象进行相关DOM操作
 
 非父子组件通信
+$emit 发布
+$on  接收
 
+详情：three.html
 
+vuex状态管理（vuex）
 
-
-
-
-
-
+example：vuex.html
 
 
 
@@ -318,6 +318,8 @@ compted：只能同步，必须有一个return返回值
 改变class，改变样式
 1.<div class="asd" v-bind:class="{colorr:iss,blue:ist}"></div>
 必须以json格式书写（判断true/false，判断样式是否显示）
+
+ :class='{headFixed:isheadFixed}'>		headFixed属性名	isheadFixed：true  false
 2.直接绑定class名
 <div class="asd" v-for="a in cls"  v-bind:class="a"></div>
 a代表类的名称，若很多  v-bind:class="[a,b,x]"  以数组方式引用，
@@ -526,7 +528,7 @@ export default {
 
 父组件中：对引用子组件的标签名中 添加 <p slot='one'>......</p>       覆盖子组件中的<slot name='one'>{{asd}}</slot>    name='one'的slot  ，可对应多个
 
-父组件中=============================
+父组件中================(内容分发)=======(内容分发)======
 <template>
  <div>
  	<h1>{{title}}{{mount}}</h1>
@@ -548,7 +550,7 @@ export default {
 
  </div>
 </template>
-------------------------------父级的html元素就能传给子组件的插槽-------------------------------
+------------------------------父级的html元素就能传给子组件的插槽(内容分发)-------------------------------
 
 
 vue-cli

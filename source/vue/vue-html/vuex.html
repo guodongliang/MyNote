@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div id="app" >
+		<!-- <p v-bind:title="msg | qk">{{msg|qk}}</p> -->
+		<div>{{mount}}</div>
+		<my-one></my-one>
+		<my-two></my-two>
+	</div>
+	<script type="text/javascript" src="./vue.js"></script>
+	<script src="https://unpkg.com/vuex"></script>
+	
+	<script>
+		var store=new Vuex.Store({
+			state:{
+				mount:0				/*将公共数据放在此*/
+			},
+			mutations:{
+				remove:function(state){			/*操作方法*/	/*state代表数据集合*/		
+					state.mount-=1
+				},
+				add:function(state){
+					state.mount+=1;
+				}
+			}
+		})
+		/*
+			state       数据集合			声明
+			mutations	方法集合			突变
+			commit 		触发vuex中的方法		提交
+
+		 */
+		/*
+		question:
+			例如：a++和a+1的区别
+		 */
+		new Vue({
+			el:'#app',
+			computed:{
+				mount:function(){
+					return store.state.mount  				/*此处只能间接引用mount，所以要以计算的形式存在*/
+				}
+			},
+			components:{
+				'my-one':{
+					template:'<button type="button" @click="mou">+</button>',
+					
+					methods:{
+						mou:function(){
+							store.commit('add')
+
+						}
+					}
+				},
+				'my-two':{
+					template:'<button type="button" @click="mou">-</button>',
+				
+					methods:{
+						mou:function(){
+							store.commit('remove')
+						}
+					}						
+				}
+			},
+			
+		})
+		/*不在需要数据*/
+	</script>
+</body>
+</html>
