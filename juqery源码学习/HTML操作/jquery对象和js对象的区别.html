@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script src="http://img.mukewang.com/down/540812440001e40e00000000.js" type="text/javascript"></script>
+<script src="http://img.mukewang.com/down/541f6ff70001a0a500000000.js" type="text/javascript"></script>
+<title>dom加载</title>
+</head>
+<body>
+	<img src="" alt="">
+<script>
+	/*jquery对象和js对象的区别
+	jquery就是js中的new Object普通对象*/
+	function $(){
+		var obj=new Object();
+		obj.next=function(){
+			alert('213')
+		}
+		return obj;
+	}
+
+	$().next()
+
+	//$()必然返回一个实例对象
+	
+
+	$('p').click(function(){
+		//此时，其中的 $(this) and this 是有区别的
+		//$(this) 指的是jquery对象
+		//this指的是js dom对象
+		//各自使用对应的方法
+	})
+	
+	//jquery对象的相互转换请看TXT文档
+</script>
+</head>
+</body>
+</html>

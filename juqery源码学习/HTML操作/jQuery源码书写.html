@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	
+</head>
+<body>
+	
+	<script>
+		// undefined=10
+		// alert(undefined)
+		
+		//jQuery对象实例化之后返回的是一个json，这个json的另一种说法是 对象字面量 ？
+
+		(function(w,undefined){ //此处，传入的w是window，可以更快查找和压缩 undefined有的浏览器可以修改,此处的undefined在自执行函数的末尾是没有相关的传入值，所以此处的值是undefined
+		//"use strict"  //严格模式，IE的低版本不建议使用呢
+		
+		var rootjQuery,//对jQuery(document)的引用
+			readyList, //dom加载有关
+			core_strundefined=typeof undefined, //typeof undefined返回的是一个字符串undefined,假如window.a==undefined 在一些低版本的浏览器可能会判断出错，建议使用typeof判断
+
+			location=window.location,
+			document=window.document,
+			docElem=document.documentElement,
+
+			//防冲突
+			_jQuery=window.jQuery,
+			_$=window.$,
+
+			class2type={},//存入的是字符串的类型名称
+			core_deletedIds=[],//与缓存数据有关，进行id的删除，2.0版本以上已经删除
+			core_version="2.0.3",
+
+			core_concat=core_deletedIds.concat,
+			core_push=core_deletedIds.push,
+			core_slice=core_deletedIds.slice,
+			core_indexOf=core_deletedIds.indexOf,
+			core_toString=class2type.toString,
+			core_hasOwn=class2type.hasOwnProperty,
+			core_trim=core_version.trim,  //去掉前后空格
+
+			jQuery=function(selector,context){
+				return new jQuery.fn.init(selector,context,rootjQuery)
+			},
+			
+
+			core_pnum="",//正则数字匹配
+			core_rnotwhite=/\S+/g,//正则单词匹配 至少出现一次空格
+			rquickExpr=/^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]*))$/,//正则标签匹配（防止XSS木马注入）
+			rsingleTag="",//正则匹配单标签
+			rmsPrefix=/^-ms-/,//正则匹配IE。。
+			rdashAlpha="";
+
+			/*jQuery对象的存储格式
+				this={
+					0："li",  //是js对象
+					1："li",
+					2："li",
+					length：3
+				}
+
+			操作时循环this，此时，如何获取this对象？*/
+
+			jQuery.fn=jQuery.prototype={
+				jQuery:core_version,
+				//jQuery.prototype.a与jQuery.prototype={}的constructor有区别，后者是{}覆盖了原型，so要修正。
+				constructor:jQuery,
+				//初始化和参数的管理
+				init:function(selector,context,rootjQuery){//context代表执行上下文，默认是document，可以是其他的环境 iframe
+					var match,elem;
+					//$("") $(null) $("undefined") $(false)
+					if(!selector){
+						return this  //this指向jQuery
+					} 
+
+					//$("#div")- $(".box") $("div") $("#div div.box")
+					//$("<li>")- $('<li>1</li>')-
+					//$(this) $(document)
+					//$(function(){})
+					//$([]) $({})
+					if(typeof selector === "string"){
+
+						if(selector.chatAt(0)==='<' && selector.charAt(selector.length-1)===">" && selector.length>=3){
+							//$("<li>") $('<li>1</li>')
+							
+							//match=[null,"<li>",null]
+							//match=[null,'<li>1</li>',null]
+							
+							match=[null,selector,null]
+						}else{
+							//$("#div") $(".box") $("div") $("#div div.box")
+							//$('<li>abs') = $('<li>')
+							//match=null;   $(".box") $("div") $("#div div.box")
+							
+							//match=["#div1",null,"div1"]  $("#div")
+							//match=["<li>hello","<li>",null]	$('<li>abs')
+							
+							match=rquickExpr.exec(selector); //截取第一段满足的值
+						}
+						//只有ID和创建标签才有match数组
+						if(match && (match[1] || !context)){  //id 和创建标签
+
+							if(match[1]){//创建标签
+								//传入$(document) and  document 
+								context=context instanceof jQuery ?context[0]:context;
+
+								//jQuery.merge（arr1,arr2） 合并数组
+								//一个数组和json合并时，会产生一个新的json对象
+								jQuery.merge(this,jQuery.parseHTML(  
+								//jQuery.parseHTML(string,document,true)把字符串转为节点数组，返回的是标签数组集合
+								//true:是否可以转化script标签， default false
+										match[1],
+										context && context.nodeType?context.ownerDocument || context : document,
+										true
+
+									))
+								//$(html,props)
+								if(rsingleTag.text(match[1]) && jQuery.isPlainObject(context) ){
+									//rsingleTag.text(match[1]) 匹配是否是单标签
+									//jQuery.isPlainObject 必须是对象字面量 一个json对象
+									//$('<li><li>',{title:"ht",html:"absd"}).appendTo("ul")
+									for(match in context ){
+										if(jQuery.isFunction( this[match] ) ){//判断jQuery下是否有该名称的函数,此时this指向jQuery
+											this[match]( context[ match ] );
+										}else{
+											this.attr(match,context[match]);
+										}
+									}									
+								}
+
+								return this; //返回一个jQuery对象
+
+							}else{//创建ID
+								elem=document.getElementById( match[2] )//match=["#div1",null,"div1"]  $("#div")
+								if( ele && elem.parentNode ){  //elem.parentNode 判断元素的父级是否存在，以此证明该元素是否存在（因黑莓6.4有问题）
+									this.length=1;
+									this[0]=elem;
+								}
+								this.context=document;
+								this.selector=selector;
+								return this;
+							}
+
+						}else if( !context || context.jquery ){//match=null;   $(".box") $("div") $("#div div.box") 没有match数组的
+							//context=$(document) || "";
+							//$('ul',$(docuemnt)) || $('ul')
+							return ( context || rootjQuery ).find( selector );//find -> sizzle ,find是查找元素的方法，使用了sizzle
+						}else{
+							//context=document
+							////$('ul',document)
+							return this.constructor( context ).find( selector );
+						}
+					/*字符形式选择*/	
+					}else if( selector.nodeType ){//$(DOMElement) $(this) $(document)
+						this.context = this[0] = selector;
+						this.length = 1;
+						return this;
+					}else if(jQuery.isFunction( selector )){//$(function(){})
+						return rootjQuery.ready( selector );
+					}
+
+					if( selector.selector !== undefined ){ //$( $("#div") )
+						this.selector = selector.selector;//本就是一个jQuery对象，直接覆盖之前的参数就行 
+						this.context = selector.context;
+					}
+					//jQuery.makeArray(ALL_LI); 将js中li的集合转为数组
+					//jQuery.makeArray(ALL_LI，{length：0})  可以变为对象字面量形式，json的形式
+					return jQuery.makeArray( selector , this );
+					
+				},/*init end*/
+				selector:"",
+				length:0,
+				toArray:function(){//将类数组转为数组  转为原生的数组，可调用原生的方法
+					//通过 [].slice(类数组) 可以将类数组转为数组
+					//使用call更改this指向，完成类数组变为数组，并返回
+					return core_slice.call(this);
+				},
+				get:function(num){//获取原生js数组集合 and 指定js元素					
+					return num==null?this.toArray():( num<0?this[this.length+num]:this[num] );
+				},
+				pushStack:function( elems ){//jQuery对象的入栈
+					var ret = jQuery.merge( this.constructor() , elems ); //形成一个对象字面量
+					ret.prevObject = this;
+					ret.context = this.context;
+
+					return ret;
+				},
+				each:function( callback , args ){//遍历集合
+					return jQuery.each( this,callback,args );  
+					//使用的是jQuery工具each方法
+					//工具方法是底层方法
+					//实例方法是更高一级的方法
+				},
+				ready:function(fn){//DOM加载的接口
+					jQuery.ready.promise().done( fn );
+					return this;
+				},
+				slice:function(){//集合的截取
+					return this.pushStack( core_slice.apply(this,arguments));
+				},
+				first:function(){
+					return this.eq(0);
+				},
+				last:function(){
+					return this.eq(-1);
+				},
+				eq:function(i){
+					var len=this.length,j=+i+( i<0 ?len : 0);
+					return this.pushStack(j>0 && j<len ? [ this[j] ] : [] );
+				},
+				map:function(){
+					return this.pushStack( jQuery.map(this,function(elem,i){
+						return callback.call( elem,i,elem );
+					}))
+				},
+				end:function(){
+					return this.prevObject || this.constructor(null);
+				},
+				push:core_push,			//添加
+				sort:[].sort,			//排序，会改变原数组
+				//sort排序，默认是字符排序，因此数字排序是以开头为准
+				//如何实现数字排序
+				//[].sort(function(a,b){
+				//		return a-b;  前者小于后者，升序
+				//		return b-a； 后者小于前者，降序	
+				//	})
+				splice:[].splice      //截取和修改片段字符，会改变原数组
+				// bb.splice()   此时截取值是  []
+				// bb.splice(2)	 截取下标2开始的之后的所有字符
+				// bb.splice(2,1)	截取下标2开始的之后的1个字符
+				// bb.splice(2,1,'ff','dd'...)  在下标2开始的之后的1个字符这个范围 变为'ff','dd'...
+				// 
+				// [].slice()	截取，规定一个范围截取，不改变原数组
+				// bb.slice()  //截取整个数组，可将类数组转为数组，slice是[]的方法？为什么对类数组有效
+				// bb.slice(1)	截取从下标1开始之后的所有字符
+				// bb.slice(1,3) 	截取下标 [1,3)的值
+			};
+
+			jQuery.fn.init.prototype=jQuery.fn;
+
+			/*扩展到原型上的是实例方法 扩展到函数续上的是静态方法*/
+			/*
+				方法挂载：
+					1.挂载至构造函数this上		$().extend():先检测本实例是否有相关的方法，在检测prototype（原型链和继承的实现方法依据）
+					2.挂载至prototype上			$().extend()
+					3.挂载至构造函数的函数名上		$.extend()
+			 */
+			/*
+				$.extend()  
+				$().extend()
+			 */
+			/*
+				$.extend({})
+				$.extend({},{},{}...)
+				$.extend(true,{},{}...) 深拷贝
+			 */
+			
+			/*
+				继承方式：
+					1.拷贝继承
+					2.类式继承/原型继承（prototype）
+			 */
+			jQuery.extend=jQuery.fn.extend=function(){//继承（拷贝继承）
+				var options,name,src,copy,copyIsArray,clone,
+					target=arguments[0]||{},
+					i=1,
+					length=arguments.length,
+					deep=false;
+
+				if( typeof target === "boolean"){//  $.extend(true,{},{}...)	判断第一参数是否是布尔值，深拷贝
+					deep=target;		//true
+					target=arguments[1]||{};
+					i=2;
+				}
+				if(typeof target !=="object" && jQuery.isFunction(target)/*不是函数时*/){
+					target={};
+				}
+				if( length === i ){//$.extend({})
+					target = this;//直接更改target的this指向，实现继承
+					--i;  
+					/*
+						赋值顺序：至右向左
+							var a = b = 10;
+							<-------------  先 b=10 在 a=10
+
+						计算顺序：至左向右
+							var a=1+1+"a"  ->   "2a"
+
+						--a;在语句执行之前计算完毕
+						a--；语句执行之后计算
+
+					 */				
+				}
+				//深拷贝是i=2 浅拷贝是i=1
+				for(;i<length;i++){//$.extend({},{})
+					if( (options = arguments[i]) != null ){//第i项的对象不为null时
+						for( name in options){//取出第i项的对象的具体属性
+							src=target[name];
+							copy = options[name];
+							if(target === copy ){//防止循环引用,第i项的对象的属性值是target对象时，终止此循环
+								continue;
+							}
+							/*深拷贝*/
+							if( deep && copy && (jQuery.isPlainObject(copy) || (copyIsArray =jQuery.isArray(copy))) ){
+								//jQuery.isPlainObject 判断是否是对象
+								//jQuery.isArray 判断是否是数组
+								if( copyIsArray ){
+									copyIsArray = false;
+									clone = src && jQuery.isArray(src) ? src : [];			
+								}else{
+									clone = src && jQuery.isPlainObject(src)? src :{};
+									// 若target自带，则保留自己的
+									// 判断此时的位置上，是否是对象或者数组，进而采取递归
+								}
+
+								target[ name ] = jQuery.extend(deep,clone,copy);//递归调用
+							}else if( copy !== undefined ){//浅拷贝
+								target[ name ] = copy;
+							}
+						}
+					}
+				}
+
+				return target;
+			};
+
+			/*
+				在jQuery上扩展一些工具方法
+			 */
+			jQuery.extend({//防止冲突
+				//生成唯一的jQ String；
+				expando:"jQuery" + (core_version + Math.random() ).replace(/\D/g,""),
+				/*
+					stringObject.replace(regexp/substr,replacement)
+				 */
+				noconflict:function(deep){//释放$   deep是释放jQuery
+					/*
+						_jQuery=window.jQuery,
+						_$=window.$,
+
+						此时：
+							若jQuery在前，则_jQuery，_$保留的都是空字符，当执行完jQuery后，window.$=window.jQuery=jQuery
+							执行noconflict方法后，释放$,使其为空 window.$=""
+
+							若jQuery在前，则_jQuery，_$保留的都是之前的已有值，当执行完jQuery后，window.$=window.jQuery=jQuery
+							执行noconflict方法后，使其为之前的值 window.$=_$;
+					 */
+					if(window.$ === jQuery ){
+						window.$=_$;
+					}
+					if(deep && window.jQuery === jQuery ){
+						window.jQuery = _jQuery;
+					}
+					return jQuery;
+				},
+				isReady:function(){//DOM是否加载完毕（）
+
+				},
+				readyWait:function(){//等待多少文件的计数器
+
+				},
+				holdReady:function(hold){//推迟DOM触发
+					if(hold){
+						jQuery.readyWait++;
+					}else{
+						jQuery.ready( true );
+					}
+				},
+				ready:function(wait){//准备DOM触发
+					if(wait === true ? --jQuery.readyWait:jQuery.isReady ){
+						return;
+					}
+
+					jQuery.isReady = true;
+
+					if( wait !== true && --jQuery.readyWait > 0 ){
+						return;
+					}
+
+					readyList.resolveWith( document , [jQuery] );
+
+					if( jQuery.fn.trigger ){
+						jQuery(document ).trigger("ready").off("ready");
+					}
+				},
+				isFunction:function(){//是否为函数
+
+				},
+				isArray:function(){//是否为数组
+
+				},
+				isWindow:function(){//是否为window
+
+				},
+				isNumeric:function(){//是否为数字
+
+				},
+				type:function(){//判断数据类型
+
+				},
+				isPlainObject:function(){//是否为对象自变量
+
+				},
+				isEmptyObject:function(){//是否为空的对象
+
+				},
+				error:function(){//抛出异常
+
+				},
+				parseHTML:function(){//解析节点
+
+				},
+				ParseJSON:function(){//解析JSON
+
+				}
+			
+			})
+
+			jQuery.ready.promise = function(obj){
+				if( !readyList ){
+					readyList = jQuery.Deferred();//创建延迟对象
+					if( document.readyState === "complete" ){//判断dom加载状态
+						setTimeout( jQuery.ready ); //正常情况下，ie会提前触发，使用setTimeout是hack写法
+					}else{
+						document.addEventListener( "DOMContentLoaded",completed,false);
+						window.addEventListener( "load",completed,false );
+						/*
+							有的浏览器会有缓存，load快于DOMContentLoaded，两个都写，保证
+						 */
+					}
+				}
+				return readyList.promise( obj );
+			}
+
+		})(window)
+	</script>
+	
+</body>
+</html>

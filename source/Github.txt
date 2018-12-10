@@ -54,6 +54,8 @@ git remote add origin 远程路径
 本地分支和远程分支关联
 git push --set-upstream origin newdev:dev	本地的newdev分支和远程dev分支进行关联
 
+git 解决fatal: Not a git repository ：        输入git init 初始化git配置  
+
 第一次发布项目
 1.git add .		.是当前目录的所有文件
 2.git commit -m "注释"	

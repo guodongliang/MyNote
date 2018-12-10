@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="http://code.jquery.com/jquery-1.8.3.js" type="text/javascript"></script>
+	<style>
+		*{padding:0px; margin:0px;}
+		ul{list-style: none;width:100px; height:auot;  position: absolute; top:50px; left:100px;border:1px solid #ccc;}
+		li{display: block;width:100px; height:40px; }
+
+		.a{display:inline-block;width:100px; height:40px;background-color: #ccc; color: red;}
+		.b{display:inline-block;border:1px solid #ccc; width:300px; height:400px; display:none;}
+		li:hover .a{background-color: #fff; color:#222;}
+	</style>
+</head>
+<body>
+	<ul>
+		<li><div class="a">1</div><div class="b">333</div></li>
+		<li><div class="a">2</div><div class="b">444</div></li>
+		<li><div class="a">2</div><div class="b">444</div></li>
+	</ul>
+	<script>
+		$('li').mouseenter(function(){
+			x=$(this).find('.a:first').width()
+			y=$(this).find('.a:first').height()
+			y1=$(this).find('.a:first').offset().top
+			// alert(y+"-"+y1)
+			console.log(-(y1-50))
+			$(this).find('.a:first').css({"border-right":"1px solid #fff"})
+			$(this).find('.b:first').show().css({'marginTop':-(y1-50+y)+"px",'marginLeft':x+"px"})
+		}).mouseleave(function(){
+			$(".b").hide()
+		})
+	</script>
+	<!-- <script>
+		function obasj(){
+			this.aa=function(){
+				console.log('aa1')
+			}
+					}
+		obasj.aa=function(){
+			console.log("aa2")
+		}
+		obasj.prototype.aa=function(){
+			console.log("bb2")
+		}
+		var bb={
+			bbb:function(){
+				console.log("bbb")
+			}
+		}
+		// bb.prototype.ccc=function(){
+		// 	console.log("ccc")
+		// }
+		obasj.aa()
+		new obasj().aa()
+		obasj.prototype.aa()
+		
+	</script>
+	 -->
+	 <script>
+	 	var a={ name:"1"};
+	 	var b={ name:"2"}
+	 	$.extend(true,a,b)
+	 	console.log(a)
+	 </script>
+</body>
+</html>

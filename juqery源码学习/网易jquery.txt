@@ -1,0 +1,144 @@
+1.8.3jquery版本：兼容IE的使用
+toggle：循环单击
+
+jquery对象和js对象的区别
+jquery就是js中的new Object普通对象
+
+jquery对象和js对象的方法能不能共用？
+不能
+
+jquery和js对象相互转换？
+js对象--》 jquery对象
+var img=document.getelementByid('imgid')
+$(img);
+
+this 代表本dom对象 $(this)代表jquery对象
+
+ jquery对象--》js对象
+$(‘sds’)[0] 得到js对象
+若是数组对象 ，则$(‘sds’)[1] 获得其他的对象
+$(‘sds’).get(0)也可以获得jquery对象的第一个属性值
+$(‘sds’).get() 直接获得一个数组
+
+jquery 核心方法
+
+遍历jquery对象
+each（function(i,item){  }）
+获得jquery对象中的dom对象的个数
+size（）
+length（）
+获得jquery对象中dom元素集合 或 第index个dom元素,得到的是js原生的对象
+get（）
+get（index）
+获得相应元素的索引值
+$(this).index('p')
+设置获取jq对象的属性值，在对象上操作属性，避免了HTML的更改
+data（）
+
+
+
+选择器 
+1）基本
+#id
+.class 
+ele
+*
+sle,sel1
+2）层级
+ancestor descendant
+patent > child
+prev +next
+prev ~silbings
+3）基础（修饰）
+:first :last :even :odd :lt :gt :eq :not 
+4）内容   has empty parent contains
+5）属性
+6）子元素选择器 （修饰选择器无效时产生的）
+：first-child
+:last-child
+:nth-child
+:only-child
+7）表单
+：input
+:checkbox
+:radio
+:file
+:text
+:password
+:submit
+:button
+:reset
+8)可见性
+9）表单属性
+：checked
+：selected
+
+筛选：（方法）出现$(this)是使用呢，这是基础选择器和筛选选择器的区别呢
+1，过滤
+eq（）
+first()
+last()
+not()
+slice()
+
+2.查找
+child()
+find()
+next()
+nextall()
+parent()
+prev()
+prevall()
+siblins()
+
+3.串联
+add()   组合选择器 
+andself()  找到自己
+
+---------------------------
+属性：
+1.属性
+attr()
+attr({})
+2.CSS类
+addClass()
+removeClass()
+toggleClass
+3.HTML代码
+html()
+html(val)
+4.文本
+text()
+text({})
+5.值
+val()
+val(val)
+
+文档处理
+内容追加
+append（）
+appendTo（）
+prepend（）
+prependTo（）
+可以实现元素的克隆，但事件的克隆如何实现？
+
+css处理
+
+
+事件
+1.页面载入
+ready（fn）
+$(function(){ })
+1）资源全部加载完毕时执行
+$(window).load(function(){ })
+2)dom加载完毕
+$(document).ready(function(){})
+0
+2.事件处理
+bind（）绑定事件
+one（）绑定的事件执行一次失效
+unbind（）解除目标的所有事件
+3.事件委派
+live（）
+die（）
+4.事件切换
