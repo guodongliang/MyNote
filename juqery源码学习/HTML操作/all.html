@@ -9,7 +9,7 @@
 		ul{list-style: none;width:100px; height:auot;  position: absolute; top:50px; left:100px;border:1px solid #ccc;}
 		li{display: block;width:100px; height:40px; }
 
-		.a{display:inline-block;width:100px; height:40px;background-color: #ccc; color: red;}
+		.a{display:inline-block;width:100px; height:40px;background-color: #ccc; }
 		.b{display:inline-block;border:1px solid #ccc; width:300px; height:400px; display:none;}
 		li:hover .a{background-color: #fff; color:#222;}
 	</style>
@@ -59,11 +59,11 @@
 		
 	</script>
 	 -->
-	 <script>
-	 	var a={ name:"1"};
-	 	var b={ name:"2"}
-	 	$.extend(true,a,b)
-	 	console.log(a)
+	 <script type="text/javascript">
+	 	var a=new Date()
+	 	console.log(typeof a)
+		console.log({}.toString.call(a))
 	 </script>
+
 </body>
 </html>

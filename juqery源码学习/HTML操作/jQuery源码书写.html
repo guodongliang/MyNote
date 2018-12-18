@@ -19,10 +19,30 @@
 		var rootjQuery,//对jQuery(document)的引用
 			readyList, //dom加载有关
 			core_strundefined=typeof undefined, //typeof undefined返回的是一个字符串undefined,假如window.a==undefined 在一些低版本的浏览器可能会判断出错，建议使用typeof判断
+			/*
+				typeof 判断数据的类型
+				js数据类型
+					原始值：String Boolean Number undefined null   sbunn
+					引用值：Array Object function data regexp。。。
+				typeof返回的数据类型（返回的是字符串类型的值）
+						string boolean number undefined object function 
+						泛型值都返回object
+			 */
 
 			location=window.location,
+			/*
+				window.location 对象用于获得当前页面的地址 (URL)，并把浏览器重定向到新的页面。
+			 */
 			document=window.document,
+			/*
+				每个载入浏览器的 HTML 文档都会成为 Document 对象。【代表HTML这个文件】
+				Document 对象使我们可以从脚本中对 HTML 页面中的所有元素进行访问。
+			 */
 			docElem=document.documentElement,
+			/*				
+			 	document.documentElement 返回html的节点元素
+				HTML 文档返回对象为HTML元素。
+			 */
 
 			//防冲突
 			_jQuery=window.jQuery,
@@ -50,7 +70,7 @@
 			rquickExpr=/^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]*))$/,//正则标签匹配（防止XSS木马注入）
 			rsingleTag="",//正则匹配单标签
 			rmsPrefix=/^-ms-/,//正则匹配IE。。
-			rdashAlpha="";
+			rdashAlpha="",
 
 			/*jQuery对象的存储格式
 				this={
@@ -62,11 +82,17 @@
 
 			操作时循环this，此时，如何获取this对象？*/
 
+			completed = function(){
+				document.removeEventListener("DOMContentLoaded",completed,false);
+				window.removeEventListener('load',completed,false);
+				jQuery.ready();
+			}
+
 			jQuery.fn=jQuery.prototype={
 				jQuery:core_version,
 				//jQuery.prototype.a与jQuery.prototype={}的constructor有区别，后者是{}覆盖了原型，so要修正。
 				constructor:jQuery,
-				//初始化和参数的管理
+				//初始化和参数的管理，经过初始化的操作，形成了一个JQuery对象，jQuery对象有自己的json格式
 				init:function(selector,context,rootjQuery){//context代表执行上下文，默认是document，可以是其他的环境 iframe
 					var match,elem;
 					//$("") $(null) $("undefined") $(false)
@@ -175,6 +201,9 @@
 					//通过 [].slice(类数组) 可以将类数组转为数组
 					//使用call更改this指向，完成类数组变为数组，并返回
 					return core_slice.call(this);
+					/*
+						由于jQuery对象时特殊的json格式，有length属性 ，使用该方法，可将jQuery对象变为数组对象
+					 */
 				},
 				get:function(num){//获取原生js数组集合 and 指定js元素					
 					return num==null?this.toArray():( num<0?this[this.length+num]:this[num] );
@@ -193,7 +222,7 @@
 					//实例方法是更高一级的方法
 				},
 				ready:function(fn){//DOM加载的接口
-					jQuery.ready.promise().done( fn );
+					jQuery.ready.promise().done( fn );  //静态方法
 					return this;
 				},
 				slice:function(){//集合的截取
@@ -236,7 +265,12 @@
 				// bb.slice(1)	截取从下标1开始之后的所有字符
 				// bb.slice(1,3) 	截取下标 [1,3)的值
 			};
-
+			/*
+				函数对象的引用 不会触发递归吗？
+				个人理解：函数是一个引用，原型也是
+						指向即可，不用继续查找
+						除非是调用自身
+			 */
 			jQuery.fn.init.prototype=jQuery.fn;
 
 			/*扩展到原型上的是实例方法 扩展到函数续上的是静态方法*/
@@ -261,6 +295,11 @@
 					1.拷贝继承
 					2.类式继承/原型继承（prototype）
 			 */
+			/*
+				$.extend( [deep ], target, object1 [, objectN ] ) 
+				target：目标对象，其他对象的成员属性将被附加到该对象上。
+				objectN：第N个被合并的对象。
+			 */
 			jQuery.extend=jQuery.fn.extend=function(){//继承（拷贝继承）
 				var options,name,src,copy,copyIsArray,clone,
 					target=arguments[0]||{},
@@ -273,10 +312,10 @@
 					target=arguments[1]||{};
 					i=2;
 				}
-				if(typeof target !=="object" && jQuery.isFunction(target)/*不是函数时*/){
+				if(typeof target !=="object" && !jQuery.isFunction(target)){//target is string
 					target={};
 				}
-				if( length === i ){//$.extend({})
+				if( length === i ){//$.extend({})  extend jQuery itself if only one argument is passed
 					target = this;//直接更改target的this指向，实现继承
 					--i;  
 					/*
@@ -326,7 +365,7 @@
 			};
 
 			/*
-				在jQuery上扩展一些工具方法
+				在jQuery上扩展一些工具方法,在jQuery对象上扩展
 			 */
 			jQuery.extend({//防止冲突
 				//生成唯一的jQ String；
@@ -354,50 +393,91 @@
 					}
 					return jQuery;
 				},
-				isReady:function(){//DOM是否加载完毕（）
-
-				},
-				readyWait:function(){//等待多少文件的计数器
-
-				},
-				holdReady:function(hold){//推迟DOM触发
+				isReady:false,//DOM是否加载完毕
+				readyWait:1,//等待多少文件的计数器
+				holdReady:function(hold){//推迟DOM触发 
+				// $.holdReady(true) 使$(function(){}) 无法DOm加载完毕后立即触发
+				//  $.holdReady(false)  释放后 可以触发 
 					if(hold){
 						jQuery.readyWait++;
 					}else{
 						jQuery.ready( true );
 					}
 				},
+				/*
+					DOM加载完毕后，执行
+					1.$(function(){})
+					2.$(document).ready(function(){})  实例方法
+					3.$().ready()      实例方法
+					4.Jquery.ready.promise().done( fn );
+				 */
 				ready:function(wait){//准备DOM触发
-					if(wait === true ? --jQuery.readyWait:jQuery.isReady ){
+					if(wait === true ? --jQuery.readyWait:jQuery.isReady ){//wait为true
 						return;
 					}
 
 					jQuery.isReady = true;
 
-					if( wait !== true && --jQuery.readyWait > 0 ){
+					if( wait !== true && --jQuery.readyWait > 0 ){//wait为false
 						return;
 					}
 
-					readyList.resolveWith( document , [jQuery] );
+					readyList.resolveWith( document , [jQuery] );//触发之前存储的函数
 
-					if( jQuery.fn.trigger ){
+					if( jQuery.fn.trigger ){//是否是主动触发
 						jQuery(document ).trigger("ready").off("ready");
 					}
 				},
-				isFunction:function(){//是否为函数
-
+				isFunction:function( obj ){//是否为函数
+					return jQuery.type(obj) === "function";	//	判断完全是function的方法
+					//低版本的浏览器下 alert是object 高版本是function
 				},
-				isArray:function(){//是否为数组
-
+				isArray:Array.isArray,//是否为数组
+				isWindow:function(obj){//是否为window
+					return obj != null && obj === obj.window;
+					/*
+						window有两种含义:
+							全局	 window
+							窗口 window.window 窗口下的window
+					 */
+					/*(未实验)
+						null , undefined ,"" 之间的关系？
+						null == null ->  true
+						undefined == null -> true
+						true || false || "" == null  ->false 
+					 */
 				},
-				isWindow:function(){//是否为window
-
+				isNumeric:function(obj){//是否为数字
+					/*
+						typeof 123  ->  Number
+						typeof NAN  ->  Number
+						使用typeof 判断不可行
+					 */					
+					 return !isNAN(parseFloat(obj)) && isFinite( obj );
+					 /*
+					 	parseFloat() 可将字符串变为数字，若不是纯数字，返回NAN
+					  */
+					 /*
+					 	Number.MAX_VALUE  代表计算机能计算的最大值
+					  */
 				},
-				isNumeric:function(){//是否为数字
-
-				},
-				type:function(){//判断数据类型
-
+				type:function(obj){//判断数据类型
+					if( obj == null ){
+						return String( obj );
+						/*
+							JavaScript 全局对象						 	
+							String() 函数把对象的值转换为字符串。
+						 */
+					}
+					return typeof obj === "object" || typeof obj === "function" ? class2type[ core_toString.call( obj )] || "object":typeof obj;
+					/*
+						{}.toString()能够区分更细的区别
+						返回的是 [object Xxx]  类型首字母大写
+						support:data regexp function array ..
+					 */
+					/*
+						低版本情况 typeof EegExp 返回的是function || object
+					 */
 				},
 				isPlainObject:function(){//是否为对象自变量
 
@@ -415,9 +495,9 @@
 
 				}
 			
-			})
+			});
 
-			jQuery.ready.promise = function(obj){
+			jQuery.ready.promise = function(obj){//3 step
 				if( !readyList ){
 					readyList = jQuery.Deferred();//创建延迟对象
 					if( document.readyState === "complete" ){//判断dom加载状态
@@ -426,12 +506,17 @@
 						document.addEventListener( "DOMContentLoaded",completed,false);
 						window.addEventListener( "load",completed,false );
 						/*
+							默认是dom快于load
 							有的浏览器会有缓存，load快于DOMContentLoaded，两个都写，保证
 						 */
 					}
 				}
 				return readyList.promise( obj );
 			}
+
+			jQuery.each("Boolean Number String Function Array Date RegExp Object Error".split(" "),function(i,name){
+				class2type["[object "+name+"]"]=name.toLowerCase();//存储类型
+			})
 
 		})(window)
 	</script>
