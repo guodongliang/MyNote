@@ -19,8 +19,9 @@ cede 完成的进程：强调一个完成的进程
 ceed 走：进程偏重于进行
 cess 开始至结束的进程
 
-proceed  开始；继续进行；发生；行进
+
 procedure n. 程序，手续；步骤
+proceed  开始；继续进行；发生；行进
 process  n. 过程，进行；方法，步骤；作用；程序；推移
 
 precede 领先
@@ -31,6 +32,7 @@ precess X
 previous 之前的
 
 particular 特定的
+bomb  vt. 轰炸，投弹于  n. 炸弹
 statement 声明
 government 政府
 disaster 灾难
@@ -42,10 +44,13 @@ public good 公共利益
 annoyed 生气
 exam 考试
 state 状态
+states 州
 etc 等
 a part of 的一部分
+a state of 的状态
 theory 理论
 Albert Einstein  阿尔伯特·爱因斯坦
+confirm vt. 确认；确定；证实；批准；使巩固
 measures 措施
 accident 事故
 
@@ -54,3 +59,39 @@ over the last few years   over the years. 多年以来   over the last few years
 in recent years
 
 official 官方
+agency n. 代理，中介；代理处，经销处
+president n. 总统；董事长；校长；主席
+during 在 。。。 时
+current  当前的
+owner 所有者，主人
+worse  n. 更坏的事；更恶劣的事
+handsome 英俊的
+charming 迷人的
+strange
+stranger n. 陌生人；外地人；局外人
+seek vt. 寻求；寻找；探索；搜索
+aspect n. 方面；方向；形势；外貌
+britain 英国  british 英国的
+tour 旅行 n，vt   tourist 旅行者
+vehicle 车辆，交通工具
+crash 使。。撞坏
+
+journalist 记者
+truth 真理
+financial  adj. 金融的；财政的，财务的
+burden	n. 负担；责任；船的载货量vt. 使负担；烦扰；装货于
+increase	n. 增加，增长；提高vt. 增加，加大vi. 增加，增大；繁殖
+sign 签署
+agreement 协议
+trade n. 贸易，交易；行业；职业
+against adj. 不利的
+hardly	adv. 几乎不，简直不；刚刚
+account n. 账户；
+situation n. 情况；形势；处境；位置
+direction 方向，趋势
+arrange  安排
+visa 签证
+as simple as 。。。     像……那么简单
+licence n. 许可证，执照；特许
+collection 集合
+silver 银  gold 金
