@@ -1,0 +1,206 @@
+
+状语从句，优化 ，省略
+
+step1:删掉连接词
+step2:从句，主句的主语是否一致，
+step3：状语从句谓语变身
+	v + ing 主动，
+	v+ed 被动，谓语省去，直接v上变形（不再是正常的结构）
+	to v+将要
+
+完成时态时，has have had 都变为having
+	主动完成时，having
+	被动时，has been beaton； having been beaton，被动时态 been beaton 已经表示了，直接变形has即可
+
+谓语省略：当being+adj时，可以省略，或者是被动时。
+极致纯洁：being，当being+adj时，可以省略
+	   	   being+n  不可以
+
+状语从句，优化 ，要省略，都省略，不要变一点，变成四不像
+
+
+物的关系 存在
+         所有
+	there be 
+
+
+
+-----------------------------------------、
+定语从句
+
+若是简单的形容词 ，则与n 形成偏正短语
+
+定语从句本质只有两种
+	人：who
+	物：which
+
+定语的形成过程：合并同类项
+	我认识那个在车里哭的人
+		1.I konw the man。
+		2.The man is crying in the car。
+		3.I know the man the man is crying in the car.
+		4.I know the man who is crying in the car.   the man is先行词， who is 关系代词
+
+	我不喜欢没有图片的书。
+		1.I do not like the book.
+		2.The book do not have pictures.
+		3.I do not like the book the book do not have pictures.
+		4.I do not like the book which do not have pictures.
+
+花样一：where/when/why
+	变形规则：介词+which=where/when/why
+	
+	我特别讨厌我遇见她的那个城市
+	1.I relly hate the city.
+	2.I met her in the city.
+	3.I relly hate the city i met her in the city.
+	4.I relly hate the city i met her in which.
+	5.I relly hate the city in which i met her . // in which 提前
+	6.I relly hate the city where i met her.   in which = where
+
+        in which《=》where
+	on which《=》when
+	for which《=》why
+
+但是：	
+	我特别讨厌有湖的那个城市
+	I heat the city the city have a lake.
+	I hete the city which have a lake.
+	我都忘记你忘不了的那天了。
+	I forgot the day you can not forgot the day
+	I forgot the day whcih you can not forgot.
+	我不理解你说的那个原因
+	I understand the reason you talk the reason.
+	I understand the reason which you talk.
+		
+必须是有介词+which 才可以替换
+
+
+花样二：whose/whom
+	变形规则：who构成的所有格用whose，谓语宾格位置用whom
+
+	我认识你喜欢的那个男孩。
+	I know the boy you like the boy.
+	I know the boy whom you like.
+
+	who => whom;
+
+   非限定性定语从句（不再是定语从句，是由定语从句的构建方法构建的，是一个插入语）
+	I love my father,who is good to me.   who代表父亲
+	you did not return last night,which made me sad.   which代替之前的这件事
+
+
+
+
+花样三：that/省略，不用于书面，多用于口语，万金油
+	
+	which=that
+	who=that
+	介词 + which ！= that
+	whose ！= that
+	whom（前面无介词）=who=that
+	
+	两个不能：介词后面不能接that        in that  因为
+		  非限定性定语从句不能用that：因为that可以作为代词，若在非限定性定语从句中使用，that分不清是不是代词，（两个有关系的句子，句子之间需要有连接词）
+
+	只能用that：强调
+		You are the most beautiful girl that i have ever seen.
+
+终极省略：被替换的同类项在句2充当宾语
+	I know the girl who you like.
+	I know the girl you like
+
+定语从句没有what，名词性从句中有what
+
+------------------------------------------------
+名词从句
+	主语从句
+	宾语从句
+	表语从句
+	同位语从句
+
+	That you love her is a lie.
+	It is a lie that you live her.  形式主语
+
+	what you name is is a secret.  你的名字是什么这是一个秘密
+
+	同位语：用一个词或句子来形容另一个词，=》 同位语从句
+	Tom ,my brother,is coming.     句子和词的地位相等
+	she hates the ideas that we shoule abandon her .
+
+	宾语从句的反问
+	I never thought that he would come for the dinner party,would he?   
+	She never thought we were wrong,did she?
+	一般是反问主语，若主语是第一人称，则以后面的句子为准
+
+
+
+
+
+——————————————————————————————————
+
+同位，倒装，强调
+
+同位：主语，n+定；n+定；n+定，谓
+	something someone 代替n 都是可以的
+
+倒装：本质是强调，将需要强调的提前，也可以加what where why
+	将要强调的部分提前，同时助词提前，（和状语区别）
+	否定句已经有强调了，不用倒装
+
+	It is ..（强调部分，是一个名词）. that ..
+	It is you that i love.  我爱的就是你
+	是强调句 还是主语从句？
+	强调句是可以将  It is .. that .去除，是对一个名词的强调
+
+	全倒装：
+		In the house lies a cat.	强调
+		A cat lies in the house,
+
+	
+——————————————————————————————
+ 
+虚拟：表达一种情绪的放大
+
+	if  i were you, i would kell him.   将时态写错，表达一种不可能，对情绪的放大
+
+	过去，现在，将来的虚拟，将时态后移，表示虚拟
+	
+	would rather 宁愿
+	as if 貌似
+		he talks as if he knew everything.
+	lest 以免（对未来的虚拟，将不会发生的）
+	but for 若不是
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
